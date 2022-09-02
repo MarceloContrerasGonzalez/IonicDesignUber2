@@ -28,7 +28,7 @@ export class RecovpassPage implements OnInit {
 
   Recovery(){
     if (this.validateUser(this.nombre_user)){
-      this.presentToast("Se a enviado un correo al correo asociado de :" + this.nombre_user)
+      this.presentToast("Se a enviado un codigo al correo asociado de :" + this.nombre_user)
 
       //cambiar de pagina, pasar el parametro de state
       this.router.navigate(['/login'])
