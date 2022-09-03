@@ -11,20 +11,24 @@
   
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Login visto en clases</ion-card-title>
+      <ion-card-title>Iniciar Sesion</ion-card-title>
     </ion-card-header>
 
     <br>
     <ion-item>
-      <ion-label position="floating">usuario</ion-label>
-      <ion-input  type="text" [(ngModel)]="dato" minLength="3" maxLength="8" required></ion-input>
+      
+      <ion-label><ion-icon name="person-circle-outline"></ion-icon></ion-label>
+      <ion-input placeholder="Usuario" type="text" [(ngModel)]="user.usuario" minLength="3" maxLength="8" required> </ion-input>
+      <span slot="error" >Ingrese Un Usuario Valido</span>
     </ion-item>
-
+      
     <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input  type="password" required>  </ion-input>
+      <ion-label><ion-icon name="lock-closed-outline"></ion-icon></ion-label>
+      <ion-input placeholder="Contraseña" type="password" required [(ngModel)]="user.password">  </ion-input>
+      <span slot="error" >Contraseña Invalida</span>
     </ion-item>
 
+    
     <br>
     <ion-button id="loginButton" class="button_margin" expand="block" (click)="InSesion()" >Ingresar</ion-button>
   </ion-card>
