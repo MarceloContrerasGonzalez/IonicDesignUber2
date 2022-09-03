@@ -1,6 +1,6 @@
 
 <!-- Splash screen -->
-<div class="splash-screen" *ngIf="bolShow">
+<div class="splash-screen" *ngIf="bolShowSplash">
   <img src="assets/icon/splashscreen.png" alt="splashLogo" id="imgSplash">
   <ng-lottie [options]='options'></ng-lottie>
 </div>
@@ -28,14 +28,14 @@
     <br>
     <ion-item>
       <ion-label><ion-icon name="person-circle-outline"></ion-icon></ion-label>
-      <ion-input placeholder="Usuario" type="text" [(ngModel)]="user.usuario" minLength="3" maxLength="8" required> </ion-input>
-      <span slot="error">Ingrese Un Usuario Valido</span>
+      <ion-input placeholder="Usuario" type="text" [(ngModel)]="user.usuario" minLength="3" maxLength="8" (click)="this.bolShowUserError = true" required> </ion-input>
+      <span slot="error" *ngIf="bolShowUserError">Ingrese Un Usuario Valido</span>
     </ion-item>
       
     <ion-item>
       <ion-label><ion-icon name="lock-closed-outline"></ion-icon></ion-label>
-      <ion-input placeholder="Contraseña" type="password" required [(ngModel)]="user.password">  </ion-input>
-      <span slot="error">Contraseña Invalida</span>
+      <ion-input placeholder="Contraseña" type="password" required [(ngModel)]="user.password" (click)="this.bolShowPasswordError = true" required>  </ion-input>
+      <span slot="error" *ngIf="bolShowPasswordError">Contraseña Invalida</span>
     </ion-item>
 
     <!-- Boton para el login -->

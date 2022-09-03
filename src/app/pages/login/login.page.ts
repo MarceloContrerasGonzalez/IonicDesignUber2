@@ -16,11 +16,14 @@ import { AnimationItem } from 'lottie-web';
 export class LoginPage implements OnInit {
 	modalController: any;
 
+	//Blur pero con variables por que no se como integrar blur aun
+	bolShowUserError: boolean = false;
+	bolShowPasswordError: boolean = false;
+
 	user={
 		usuario: "",
 		password: ""
 	}
-	
 	field: String = "";
 
 	
@@ -29,7 +32,9 @@ export class LoginPage implements OnInit {
 	options: AnimationOptions = {
 		path: '/assets/lottie/splash.json'
 	  }
-	  bolShow: boolean = false ;//Dejar al splash screen visible por defecto
+	  bolShowSplash: boolean = false ;//Dejar al splash screen visible por defecto
+
+	
 	
 	  // This is the component function that binds to the animationCreated event from the package  
   onAnimate(animationItem: AnimationItem): void {    
@@ -69,7 +74,7 @@ export class LoginPage implements OnInit {
 	 
 	  ngOnInit() {
 		setTimeout(() => {
-			this.bolShow = false;
+			this.bolShowSplash = false;
 		  }, 2000);  //5s
 
 		
