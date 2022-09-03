@@ -2,27 +2,58 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 
+
+//Splash screen
+import { AnimationOptions } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
 
-
 export class LoginPage implements OnInit {
-	user ={
+	modalController: any;
+
+	user={
 		usuario: "",
 		password: ""
 	}
-
-
+	
 	field: String = "";
+
+	
+
+	//Llamar al splash screen
+	options: AnimationOptions = {
+		path: '/assets/lottie/splash.json'
+	  }
+	  bolShow: boolean = false ;//Dejar al splash screen visible por defecto
+	
+	  // This is the component function that binds to the animationCreated event from the package  
+  onAnimate(animationItem: AnimationItem): void {    
+    console.log(animationItem);  
+  }
+
+
 	constructor(
 		private router: Router,
 		public toastController: ToastController
 		) {}
+	  
+	 validador(model: any){
+		for (var [key, value] of Object.entries(model)) {
+			if (value == ""){
+				this.field = key;
+				return false;
+			}
+		}
+		return true;
+	 };
+	
+	 InSesion(){
 
-	  InSesion(){
 		/* validacion */
 		if (this.validador(this.user)){
 			let navigationExtras: NavigationExtras={
@@ -34,22 +65,14 @@ export class LoginPage implements OnInit {
 		}else{
 			this.presentToast("Error En el campo: "+this.field);
 		}
-
 	  };
-	
-	  
-	 validador(model: any){
-		for (var [key, value] of Object.entries(model)) {
-			if (value == ""){
-				this.field = key;
-				return false;
-			}
-		}
-		return true;
-	 };
-	 
 	 
 	  ngOnInit() {
+		setTimeout(() => {
+			this.bolShow = false;
+		  }, 2000);  //5s
+
+		
 	  };
 
 	  async presentToast(msg:string) {
@@ -59,5 +82,9 @@ export class LoginPage implements OnInit {
 		});
 		toast.present();
 	  };
+
+	  
+	  
 	
 }
+
