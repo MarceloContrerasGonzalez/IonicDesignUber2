@@ -9,14 +9,13 @@
 <ion-content fullscreen>
   <img src="assets/icon/duocicon.png" alt="DuocIcon" id="duocIcon">
   
-  <ion-card>
+  <ion-card style="">
     <ion-card-header>
       <ion-card-title>Iniciar Sesion</ion-card-title>
     </ion-card-header>
 
     <br>
     <ion-item>
-      
       <ion-label><ion-icon name="person-circle-outline"></ion-icon></ion-label>
       <ion-input placeholder="Usuario" type="text" [(ngModel)]="user.usuario" minLength="3" maxLength="8" required> </ion-input>
       <span slot="error" >Ingrese Un Usuario Valido</span>
@@ -31,6 +30,11 @@
     
     <br>
     <ion-button id="loginButton" class="button_margin" expand="block" (click)="InSesion()" >Ingresar</ion-button>
+    <p style="text-align: center;"><a [routerLink]="['/recovpass']">¿Olvidaste tu contraseña?</a></p>
+    <br>
   </ion-card>
+ 
 
 </ion-content>
+
+
