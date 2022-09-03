@@ -32,7 +32,7 @@ export class LoginPage implements OnInit {
 	options: AnimationOptions = {
 		path: '/assets/lottie/splash.json'
 	  }
-	  bolShowSplash: boolean = false ;//Dejar al splash screen visible por defecto
+	bolShowSplash: boolean = false ;//Dejar al splash screen visible por defecto
 
 	
 	
@@ -68,14 +68,16 @@ export class LoginPage implements OnInit {
 			};
 			this.router.navigate(['/home'], navigationExtras)
 		}else{
-			this.presentToast("Error En el campo: "+this.field);
+			//this.presentToast("Error en "+this.field);
+			this.bolShowUserError = true;
+			this.bolShowPasswordError = true;
 		}
 	  };
 	 
 	  ngOnInit() {
 		setTimeout(() => {
 			this.bolShowSplash = false;
-		  }, 2000);  //5s
+		  }, 2000);  //2s
 
 		
 	  };

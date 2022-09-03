@@ -33,7 +33,11 @@ export class RecovpassPage implements OnInit {
       //cambiar de pagina, pasar el parametro de state
       this.router.navigate(['/login'])
     }
-    
+  }
+
+  Cancel(){
+    //Cancelar todo y volver al login
+    this.router.navigate(['/login'])
   }
 
   validateUser(value){
