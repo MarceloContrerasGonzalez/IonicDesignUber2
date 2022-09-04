@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 
 @Component({
@@ -12,7 +12,7 @@ export class RecovpassPage implements OnInit {
 
   constructor(
     public toastController: ToastController,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -25,6 +25,8 @@ export class RecovpassPage implements OnInit {
     });
     toast.present();
   }
+
+
 
   Recovery(){
     if (this.validateUser(this.nombre_user)){

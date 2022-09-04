@@ -5,9 +5,10 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
 
+
+
 //Lottie
 import { LottieModule } from 'ngx-lottie';
-import player from 'lottie-web';
 
 export function playerFactory(){
   return import('lottie-web');//player

@@ -34,6 +34,8 @@
       
     <ion-item>
       <ion-label><ion-icon name="lock-closed-outline"></ion-icon></ion-label>
+
+
       <ion-input placeholder="Contraseña" type="password" required [(ngModel)]="user.password" (click)="this.bolShowPasswordError = true" required>  </ion-input>
       <span slot="error" *ngIf="bolShowPasswordError">Contraseña Invalida</span>
     </ion-item>
