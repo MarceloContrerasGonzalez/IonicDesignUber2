@@ -1,0 +1,8 @@
+<Para splash screen>
+npm install lottie-web ngx-lottie
+npm install --save @teamhive/lottie-player
+
+
+<Angular material>
+npm install -g @angular/cli
+ng add @angular/material
