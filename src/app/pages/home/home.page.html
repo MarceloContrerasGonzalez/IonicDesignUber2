@@ -1,4 +1,5 @@
 <!-- header -->
+<!-- header -->
 <ion-header>
   <ion-toolbar>
     <img src="assets/icon/duocicon.png" alt="DuocIcon" id="duocIcon">
@@ -7,6 +8,38 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-title size="large" class="ion-text-center tittle-Size">¡Bienvenido {{user.usuario}}!</ion-title>
+  <div class="Home_tittle">
+    <h1>¡Bienvenido {{user.usuario}}!</h1>
+    <h2>¿Que deseas hacer?</h2>
+  </div>
+
+  <div class="buttons_div">
+    <div id="car_div">
+      <img src="assets/icon/home_car.png" alt="Auto" id="CarIcon">
+      <div><span id="car_text">Conducir</span></div>
+    </div>
+    
+    <div id="search_div">
+      <img src="assets/icon/home_search.png" alt="buscar" id="SearchIcon">
+      <div><span id="search_text">Buscar transporte</span></div>
+    </div>
+  </div>
+  
 
 </ion-content>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="conducir">
+      <ion-icon name="car-sport-outline"></ion-icon>
+      <ion-label>Conducir</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="buscar">
+      <ion-icon name="search-circle-outline"></ion-icon>
+      <ion-label>Buscar vehiculo</ion-label>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+</ion-tabs>
+

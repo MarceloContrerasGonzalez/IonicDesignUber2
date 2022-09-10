@@ -6,7 +6,19 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+
+    children: [
+      {
+        path: 'conducir',
+        loadChildren: () => import('./conducir/conducir.module').then( m => m.ConducirPageModule)
+      },
+      {
+        path: 'buscar',
+        loadChildren: () => import('./buscar/buscar.module').then( m => m.BuscarPageModule)
+      }
+    ]
   }
+
 ];
 
 @NgModule({

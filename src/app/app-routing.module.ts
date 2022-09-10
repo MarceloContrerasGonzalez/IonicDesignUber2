@@ -19,6 +19,15 @@ const routes: Routes = [
     path: 'recovpass',
     loadChildren: () => import('./pages/recovpass/recovpass.module').then( m => m.RecovpassPageModule)
   },
+  {
+    path: 'conducir',
+    loadChildren: () => import('./pages/home/conducir/conducir.module').then( m => m.ConducirPageModule)
+  },
+  {
+    path: 'buscar',
+    loadChildren: () => import('./pages/home/buscar/buscar.module').then( m => m.BuscarPageModule)
+  },
+
 ];
 
 @NgModule({
