@@ -1,16 +1,36 @@
-<ion-header [translucent]="true">
+<!-- header -->
+<!-- header -->
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Skeleton APP
-    </ion-title>
+    <img src="assets/icon/duocicon.png" alt="DuocIcon" id="duocIcon">
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <ion-toolbar>
-    <ion-title size="large">¡Bienvenido!</ion-title>
-  </ion-toolbar>
+  <div class="Home_tittle">
+    <h1>¡Bienvenido!</h1>
+    <h3>{{user.usuario}}</h3>
+    <img src="assets/img/user.png" alt="">
+    <h2>Que deseas hacer?</h2>
+  </div>
+  
 
-  <ion-label>Usuario: {{user.usuario}}</ion-label>
+
 </ion-content>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="conducir">
+      <ion-icon name="car-sport-outline"></ion-icon>
+      <ion-label>Conducir</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="buscar">
+      <ion-icon name="search-circle-outline"></ion-icon>
+      <ion-label>Buscar vehiculo</ion-label>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+</ion-tabs>
+
