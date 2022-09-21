@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+import { Plugins } from '@capacitor/core';
+
+const { SplashScreen } = Plugins;
 //import { MatDialog } from '@angular/material/dialog';
 //import { DialogComponent } from './components/shared/dialog/dialog.component';
 
@@ -9,6 +12,10 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  componentDidLoad(){
+    SplashScreen.hide();
+  }
+
   constructor(
     //public dialog: MatDialog
   ) {}

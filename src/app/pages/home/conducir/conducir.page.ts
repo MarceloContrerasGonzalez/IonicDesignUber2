@@ -6,8 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./conducir.page.scss'],
 })
 export class ConducirPage implements OnInit {
-
+  type = 'deposit';
   constructor() { }
+
+  segmentChanged(ev: any) {
+    console.log('Segment changed', ev);
+  }
 
   ngOnInit() {
   }

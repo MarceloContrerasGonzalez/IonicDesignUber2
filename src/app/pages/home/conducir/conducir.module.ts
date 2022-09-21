@@ -8,12 +8,15 @@ import { ConducirPageRoutingModule } from './conducir-routing.module';
 
 import { ConducirPage } from './conducir.page';
 
+import {MatInputModule} from '@angular/material/input';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ConducirPageRoutingModule
+    ConducirPageRoutingModule,
+    MatInputModule
   ],
   declarations: [ConducirPage]
 })

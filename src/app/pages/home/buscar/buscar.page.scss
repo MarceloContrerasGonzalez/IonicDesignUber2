@@ -1,0 +1,51 @@
+.Tittle_vehicle{
+    text-align: center;
+}
+
+.card_padding{
+    padding: 0;
+}
+
+.img_col{
+    max-width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8%;
+}
+
+.img_col img{
+    margin-top: 50%;
+}
+
+.ruta_col{
+    max-width: 40%;
+    padding-right: 0;
+}
+
+.ruta_col h3{ 
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.pas_col{
+    max-width: 14%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pas_col h3{ 
+    font-size: 15px;
+}
+
+.tar_col{
+    max-width: 24%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tar_col h3{ 
+    font-size: 30px;
+}

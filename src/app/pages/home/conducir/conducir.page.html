@@ -4,5 +4,35 @@
 </ion-header>
 
 <ion-content>
-  <p>conducir</p>
+
+  <form class="form_vehiculo-form">
+    <p>
+      <mat-form-field class="mat_field first_margin" appearance="fill">
+        <mat-label>Cantidad maxima de pasajeros</mat-label>
+        <input matInput type="number" min="1" max="5" placeholder="4">
+      </mat-form-field>
+
+      <mat-form-field class="mat_field" appearance="fill" floatLabel="always">
+        <mat-label>Tarifa por persona</mat-label>
+        <input matInput type="number" class="example-right-align" placeholder="0">
+        <span matPrefix>$&nbsp;</span>
+      </mat-form-field>
+
+      <mat-form-field class="mat_field" appearance="fill">
+        <mat-label>Patente del vehiculo</mat-label>
+        <input matInput placeholder="XX-XX-10">
+      </mat-form-field>
+
+      <mat-form-field class="mat_field " appearance="fill">
+        <mat-label>Informacion adicional</mat-label>
+        <textarea class="mat_area" matInput #info_extra  maxlength="240"></textarea>
+        <mat-hint>(Opcional)</mat-hint>
+        <mat-hint align="end">{{info_extra.value.length}} / 240</mat-hint>
+      </mat-form-field>
+    </p>
+  </form>
+
+  <ion-button color="secondary" id="trip_button">Preparar el viaje</ion-button>
+
+
 </ion-content>
