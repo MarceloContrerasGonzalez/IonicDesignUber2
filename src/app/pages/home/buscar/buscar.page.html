@@ -6,30 +6,41 @@
 <ion-content>
   <h1 class="Tittle_vehicle">Vehiculos disponibles</h1>
 
-    <ion-card><ion-card-content class="card_padding">
-      <ion-row>
-        <ion-col class="img_col">
-          <img src="assets/icon/map_mark_icon.png" alt="Marcador">
-        </ion-col>
+    <!-- Efecto de carga -->
+    <ion-item *ngIf="!viajes" class="ion-padding custom-skeleton">
+      <ion-label>
+        <ion-skeleton-text animated></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>  
 
-        <ion-col class="ruta_col">
-          <h3>Viña del mar</h3> 
-            <p>Bellavista</p>
-        </ion-col>
-
-        <ion-col class="img_col">
-          <img src="assets/icon/person_icon.png" alt="Pasajeros">
-        </ion-col>
-
-        <ion-col class="pas_col">
-          <h3>2/4</h3>
-        </ion-col>
-
-        <ion-col class="tar_col">
-          <h3>$500</h3>
-        </ion-col>
-      </ion-row>
-    </ion-card-content></ion-card>
+    <!-- Mostrar todos los viajes de la bdd0 -->
+    <ion-item *ngFor="let viaje of viajes">
+      <ion-card-content class="card_padding" (click)="showFor(viaje.id)">
+        <ion-row>
+          <ion-col class="img_col">
+            <img src="assets/icon/map_mark_icon.png" alt="Marcador">
+          </ion-col>
+  
+          <ion-col class="ruta_col">
+            <h3>{{viaje.city}}</h3> 
+              <p>{{viaje.street}}</p>
+          </ion-col>
+  
+          <ion-col class="img_col">
+            <img src="assets/icon/person_icon.png" alt="Pasajeros">
+          </ion-col>
+  
+          <ion-col class="pas_col">
+            <h3>{{viaje.passengers}}/4</h3>
+          </ion-col>
+  
+          <ion-col class="tar_col">
+            <h3>${{viaje.price}}</h3>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-item>
 
 
 

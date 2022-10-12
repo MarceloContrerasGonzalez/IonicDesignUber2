@@ -9,14 +9,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Importaciones angular material
 import { MatInputModule } from '@angular/material/input';
-/* import { MatDialogModule } from '@angular/material/dialog';
-import { DialogComponent } from './components/shared/dialog/dialog.component'; */
+
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,  
     //DialogComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule, 
