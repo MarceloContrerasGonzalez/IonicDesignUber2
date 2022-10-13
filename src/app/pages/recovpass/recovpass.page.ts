@@ -5,8 +5,6 @@ import { ToastController } from '@ionic/angular';
 //Dialog angular material
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
-
-
 @Component({
   selector: 'app-recovpass',
   templateUrl: './recovpass.page.html',
@@ -36,6 +34,7 @@ export class RecovpassPage implements OnInit {
 
   Recovery(){  
     if (this.validateUser(this.nombre_user)){
+
       //Llamar al componente dialogo
       const dialogRef = this.dialog.open(DialogComponent, {
         data: 'Se a enviado un codigo al correo asociado de "' + this.nombre_user + '"'
@@ -50,6 +49,8 @@ export class RecovpassPage implements OnInit {
             this.router.navigate(['/login'])
           }
       })
+
+
     } else {
       this.bolShowUserError = true;
     }

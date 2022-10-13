@@ -7,9 +7,11 @@ const routes: Routes = [
     path: '',
     component: HomePage,
 
+    //Se declaran las rutas hijas (componente) que cargara en el home
     children: [
       {
         path: 'conducir',
+        //component: Componente
         loadChildren: () => import('./conducir/conducir.module').then( m => m.ConducirPageModule)
       },
       {
