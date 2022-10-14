@@ -3,7 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'home',
+    path: 'a',
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   },
   {
@@ -18,7 +18,12 @@ const routes: Routes = [
   {
     path: 'recovpass',
     loadChildren: () => import('./pages/recovpass/recovpass.module').then( m => m.RecovpassPageModule)
+  },
+  {
+    path: '**',
+    loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
   }
+
 ];
 
 @NgModule({
