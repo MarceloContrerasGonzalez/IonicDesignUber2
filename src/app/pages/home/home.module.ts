@@ -3,8 +3,15 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
-
 import { HomePageRoutingModule } from './home-routing.module';
+
+//Mat module para la pagina de conducir
+import {MatInputModule} from '@angular/material/input';
+
+
+//Los componentes que heredaran todo esto
+import { ConducirComponent } from 'src/app/components/Tabs/conducir/conducir.component';
+import { BuscarViajesComponent } from 'src/app/components/Tabs/buscar-viajes/buscar-viajes.component';
 
 
 @NgModule({
@@ -12,8 +19,9 @@ import { HomePageRoutingModule } from './home-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
+    MatInputModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, ConducirComponent, BuscarViajesComponent]
 })
 export class HomePageModule {}

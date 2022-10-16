@@ -2,6 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePage } from './home.page';
 
+//componente para los tabs
+import { BuscarViajesComponent } from 'src/app/components/Tabs/buscar-viajes/buscar-viajes.component';
+import { ConducirComponent } from 'src/app/components/Tabs/conducir/conducir.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -11,12 +15,11 @@ const routes: Routes = [
     children: [
       {
         path: 'conducir',
-        //component: Componente
-        loadChildren: () => import('./conducir/conducir.module').then( m => m.ConducirPageModule)
+        component: ConducirComponent
       },
       {
-        path: 'buscar',
-        loadChildren: () => import('./buscar/buscar.module').then( m => m.BuscarPageModule)
+        path: 'buscarViaje',
+        component: BuscarViajesComponent
       }
     ]
   }
@@ -24,7 +27,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forChild(routes),
+    
+  ],
+  exports: [
+    RouterModule
+  ]
 })
 export class HomePageRoutingModule {}

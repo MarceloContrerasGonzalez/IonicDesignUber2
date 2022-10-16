@@ -17,12 +17,13 @@ export class HomePage {
     private router: Router) 
 
     {
-    this.activeroute.queryParams.subscribe(params => {
+      
+    /* this.activeroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.user = this.router.getCurrentNavigation().extras.state.user;
         console.log(this.user)
       }
-    });
+    }); */
   }
 
   
