@@ -18,10 +18,15 @@ export class BuscarPage implements OnInit {
 */
 
 export class BuscarPage{
-  usuario:any;
-  usuarios:any;
+  
+  alumno:any={
+    id: null,
+    nombre: "",
+    username: "",
+    password: ""
+  };
+  alumnos:any;
 
-  viajes:any;
   viaje:any={
     userId: null,
     id:null,
@@ -30,20 +35,36 @@ export class BuscarPage{
     passengers: null,
     price: null
   };
+  viajes:any;
 
   compareWith:any;
 
   constructor(private api: ApiClientService){}
 
   ionViewWillEnter(){
-    //this.getUsuarios();
+    this.getUsuarios();
     this.getViajes();
   }
 
+  getUsuarios(){
+    this.api.getUsuarios().subscribe((data)=>{
+      console.log("----------Datauser 0----------");
+      //Los usuarios son recibidos del github como un objeto, transformarlo a un array
+      console.log(data);
 
-  //getUsuarios(){};
+      //const values = Object.values(data);
+      //console.log("----------Datauser 1----------");
+      //console.log(values);
+
+      this.alumnos=data;
+      //this.alumnos.reverse();
+    });
+  };
+
   getViajes(){
     this.api.getViajes().subscribe((data)=>{
+      console.log("----------Dataviaje----------");
+      console.log(data);
       this.viajes=data;
       this.viajes.reverse();
     });

@@ -1,12 +1,14 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { ApiClientService } from 'src/app/services/api-client.service';
 
 //Splash screen
 import { AnimationOptions } from 'ngx-lottie';
 
 //Animaciones
 import { AnimationController } from '@ionic/angular';
+import { Observable, Subscriber, Subscription } from 'rxjs'; //añadi el subject
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -16,6 +18,14 @@ import { AnimationController } from '@ionic/angular';
 export class LoginPage implements OnInit {
 	@ViewChild('appLogo',{read: ElementRef, static:true}) logo: ElementRef;
 
+	//BDD
+	alumno:any={
+		id: null,
+		nombre: "",
+		username: "",
+		password: ""
+	};
+	alumnos:any;
 	modalController: any;
 
 	//Blur pero con variables por que no se como integrar blur aun
@@ -40,9 +50,25 @@ export class LoginPage implements OnInit {
 	constructor(
 		private router: Router,
 		public toastController: ToastController,
-		private animationCtrl: AnimationController
+		private animationCtrl: AnimationController,
+		private api: ApiClientService
 	) {}
 	
+	ionViewWillEnter(){
+		this.getUsuarios();
+	}
+
+	getUsuarios(){
+
+		this.api.getUsuarios().subscribe((data)=>{
+		  let jsonData =  Object.values(data) //recojer los datos del objeto del api y transformalos
+		  let alumSchema = Object.values(jsonData[0]) //Tomar los datos del primer objeto, buscar dentro del esquema de id 0 (alumnos) y pasarlo a la variable 2 como objeto
+
+		  this.alumnos = alumSchema;//le pasamos la variable 
+
+		});
+	  };
+
 
 	 validador(model: any){
 		for (var [key, value] of Object.entries(model)) {
@@ -52,22 +78,31 @@ export class LoginPage implements OnInit {
 			}
 		}
 		return true;
-	 };
+	 }; 
 	
 	 InSesion(){
 
 		/* validacion */
 		if (this.validador(this.user)){
-			let navigationExtras: NavigationExtras={
-				state:{
-					user: this.user
+
+			for (let i = 1; i < this.alumnos.length; i++){
+				if (this.user.usuario == this.alumnos[i].username)
+				{
+					if (this.user.password == this.alumnos[i].password){
+						console.log("VALIDADO EL USUARIO");
+						this.router.navigate(['/home'])
+					} else {
+						console.log("Username o password incorrecta");
+					}
+					break;
 				}
-			};
-			this.router.navigate(['/home'], navigationExtras)
+				
+			}
+			console.log("No habia nada")
 		}else{
 			//this.presentToast("Error en "+this.field);
 			this.bolShowUserError = true;
-			this.bolShowPasswordError = true;
+			this.bolShowPasswordError =true;
 		}
 	  };
 	 
