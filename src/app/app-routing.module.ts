@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: 'recovpass',
     loadChildren: () => import('./pages/recovpass/recovpass.module').then( m => m.RecovpassPageModule)
+  },
+  {
+    path: '**',
+    loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
   }
 ];
 
