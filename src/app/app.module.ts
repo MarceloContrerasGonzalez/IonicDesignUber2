@@ -31,8 +31,7 @@ import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
   providers: [
     { provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 
-    }, SQLite
-  ],
+    }, SQLite],
   bootstrap: [AppComponent],
 })
 

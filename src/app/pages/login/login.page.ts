@@ -1,7 +1,12 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { ApiClientService } from 'src/app/services/api-client.service';
+import { ApiClientService } from 'src/app/services/Api/api-client.service';
+
+//importar BDD storage
+//import { StorageServiceService } from 'src/app/services/Storage/storage-service.service';
+import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
+import { ActiveUser } from 'src/app/clases/active-user';
 
 //Splash screen
 import { AnimationOptions } from 'ngx-lottie';
@@ -18,6 +23,8 @@ import { Observable, Subscriber, Subscription } from 'rxjs'; //añadi el subject
 export class LoginPage implements OnInit {
 	@ViewChild('appLogo',{read: ElementRef, static:true}) logo: ElementRef;
 
+	modalController: any;
+	
 	//BDD
 	alumno:any={
 		id: null,
@@ -26,7 +33,9 @@ export class LoginPage implements OnInit {
 		password: ""
 	};
 	alumnos:any;
-	modalController: any;
+	//persistencia SQL
+	usuarios: ActiveUser[];
+	
 
 	//Blur pero con variables por que no se como integrar blur aun
 	bolShowUserError: boolean = false;
@@ -51,7 +60,8 @@ export class LoginPage implements OnInit {
 		private router: Router,
 		public toastController: ToastController,
 		private animationCtrl: AnimationController,
-		private api: ApiClientService
+		private api: ApiClientService,
+		private dbservice: DbserviceService
 	) {}
 	
 	ionViewWillEnter(){
@@ -79,6 +89,11 @@ export class LoginPage implements OnInit {
 		}
 		return true;
 	 }; 
+
+	 guardarBDD() {
+		this.dbservice.addUsuario(this.user.usuario,this.user.password);
+		this.dbservice.presentToast("USuario guardado");
+	 }
 	
 	 InSesion(){
 
@@ -90,6 +105,7 @@ export class LoginPage implements OnInit {
 				{
 					if (this.user.password == this.alumnos[i].password){
 						console.log("VALIDADO EL USUARIO");
+						this.guardarBDD();
 						this.router.navigate(['/home'])
 					} else {
 						console.log("Username o password incorrecta");
@@ -107,6 +123,15 @@ export class LoginPage implements OnInit {
 	  };
 	 
 	  ngOnInit() {
+
+		//Cargar la base de datos
+		this.dbservice.dbState().subscribe((res)=>{
+			if(res){
+			  this.dbservice.fetchUsuario().subscribe(item=>{
+				this.usuarios=item;
+			  })
+			}
+		  })
 
 		setTimeout(() => {
 			this.bolShowSplash = false;

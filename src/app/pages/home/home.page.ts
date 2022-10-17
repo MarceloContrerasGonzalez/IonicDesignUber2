@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+//importar BDD storage
+import { ActiveUser } from 'src/app/clases/active-user';
+import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
 
 @Component({
   selector: 'app-home',
@@ -11,23 +14,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HomePage {
   user:any;
 
+  usuarios: ActiveUser[];
   constructor(
-   
     private activeroute: ActivatedRoute, 
-    private router: Router) 
-
-    {
-      
-    /* this.activeroute.queryParams.subscribe(params => {
-      if (this.router.getCurrentNavigation().extras.state) {
-        this.user = this.router.getCurrentNavigation().extras.state.user;
-        console.log(this.user)
-      }
-    }); */
-  }
+    private servicioBD: DbserviceService,
+    private router: Router) {}
 
   
     ngOnInit() {
+      //Cargar la base de datos
+      this.servicioBD.dbState().subscribe((res)=>{
+        if(res){
+          this.servicioBD.fetchUsuario().subscribe(item=>{
+            this.usuarios=item;
+          })
+        }
+      })
     }
   
 }

@@ -19,10 +19,15 @@
     <img  src="assets/icon/favicon.png" alt="AppLogo" id="appLogo" #appLogo>
     <img src="assets/img/FondoDuoc.png" alt="fondoDuoc" id="duocBackground">
   </div>
+
+  <ion-item *ngFor="let u of usuarios">
+    <h1>¡Bienvenido {{u.username}}!</h1>
+    <p>contraseña: {{u.password}}</p>
+  </ion-item>
   
   <ion-card >
     <ion-card-header>
-      <ion-card-title class="ion-text-center">Iniciar Sesion</ion-card-title>
+      <ion-card-title class="ion-text-center">Iniciar sesion</ion-card-title>
     </ion-card-header>
 
     <br>

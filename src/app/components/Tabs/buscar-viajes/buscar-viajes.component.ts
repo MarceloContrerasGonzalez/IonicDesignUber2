@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiClientService } from 'src/app/services/api-client.service';
+import { ApiClientService } from 'src/app/services/Api/api-client.service';
 
 @Component({
   selector: 'app-buscar-viajes',

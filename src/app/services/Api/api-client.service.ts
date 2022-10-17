@@ -19,17 +19,9 @@ export class ApiClientService {
   //Establecer la base url del api a consumir
   apiURL = 'http://192.168.100.5:3000';
   apiGithub = 'https://nancyb3a.github.io/Test/usuarios_PGY4121_01.json';
-  // https://nancyb3a.github.io/Test/usuarios_PGY4121_01.json
-  //https://jordanium01.github.io/usuarios_PGY4121_01.json
 
   constructor(private http:HttpClient) { }
 
-  //recojer un usuario en especifico
- /* getUsuario(id):Observable<any>{
-    return this.http.get(this.apiGithub+'/'+id).pipe(
-      retry(3)//Si no se conecta al sv 3 en 3 oportunidades, no lo hara
-    );
-  }*/
   //Recojer todos los usuarios de la bdd
   getUsuarios():Observable<any>{
     return this.http.get(this.apiGithub).pipe(
