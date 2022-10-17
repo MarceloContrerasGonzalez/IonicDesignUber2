@@ -20,10 +20,6 @@
     <img src="assets/img/FondoDuoc.png" alt="fondoDuoc" id="duocBackground">
   </div>
 
-  <ion-item *ngFor="let u of usuarios">
-    <h1>¡Bienvenido {{u.username}}!</h1>
-    <p>contraseña: {{u.password}}</p>
-  </ion-item>
   
   <ion-card >
     <ion-card-header>
@@ -49,6 +45,8 @@
     <br>
     <ion-button  id="loginButton" class="button_margin" expand="block" (click)="InSesion()" >Ingresar</ion-button>
     <p style="text-align: center; margin-top: 30px; margin-bottom: 0px;"><a [routerLink]="['/recovpass']">¿Olvidaste tu contraseña?</a></p>
+    <br>
+    <p style="text-align: center; margin-top: 30px; margin-bottom: 0px;"><a [routerLink]="['/nada']">En Construccion</a></p>
     <br>
   </ion-card>
  

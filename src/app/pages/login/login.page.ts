@@ -106,6 +106,7 @@ export class LoginPage implements OnInit {
 					if (this.user.password == this.alumnos[i].password){
 						console.log("VALIDADO EL USUARIO");
 						this.guardarBDD();
+						localStorage.setItem('ingresado','true')
 						this.router.navigate(['/home'])
 					} else {
 						console.log("Username o password incorrecta");
