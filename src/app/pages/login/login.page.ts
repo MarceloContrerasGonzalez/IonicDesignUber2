@@ -93,20 +93,13 @@ export class LoginPage implements OnInit {
 		if (this.validador(this.user)){
 
 			 for (let i = 1; i < this.alumnos.length; i++){
-				if (this.user.usuario == this.alumnos[i].username)
+				if ((this.user.usuario == this.alumnos[i].username) && (this.user.password == this.alumnos[i].password))
 				{
-					if (this.user.password == this.alumnos[i].password){
-						console.log("VALIDADO EL USUARIO");
-						this.guardarBDD();
-						localStorage.setItem('ingresado','true')
-						this.router.navigate(['/home'])
-						break;
-					} else {
-						//Si es que la contraseña esta mal dar error
-						this.dataUserError("El usuario y/o la contraseña son incorrectos");
-						break;
-					}
-					
+					console.log("VALIDADO EL USUARIO");
+					this.guardarBDD();
+					localStorage.setItem('ingresado','true')
+					this.router.navigate(['/home'])
+					break;
 				} 
 
 				if (i >= this.alumnos.length-1){
