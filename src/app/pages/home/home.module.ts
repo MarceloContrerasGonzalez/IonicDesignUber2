@@ -12,6 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 //Los componentes que heredaran todo esto
 import { ConducirComponent } from 'src/app/components/Tabs/conducir/conducir.component';
 import { BuscarViajesComponent } from 'src/app/components/Tabs/buscar-viajes/buscar-viajes.component';
+import { InicioComponent } from 'src/app/components/Tabs/inicio/inicio.component';
 
 
 @NgModule({
@@ -22,6 +23,6 @@ import { BuscarViajesComponent } from 'src/app/components/Tabs/buscar-viajes/bus
     MatInputModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, ConducirComponent, BuscarViajesComponent]
+  declarations: [HomePage, ConducirComponent, BuscarViajesComponent, InicioComponent]
 })
 export class HomePageModule {}

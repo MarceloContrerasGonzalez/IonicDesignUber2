@@ -1,28 +1,20 @@
-<!-- header -->
 <ion-header>
   <ion-toolbar>
     <img src="assets/icon/duocicon.png" alt="DuocIcon" id="duocIcon">
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div class="Home_tittle">
-    <h1>¡Bienvenido!</h1>
-
-    <h3 *ngFor="let u of usuarios">{{u.username}}</h3>
-    <br>
-    <img src="assets/img/user.png" alt="">
-    <h2>Que deseas hacer?</h2>
-  </div>
-  
-
-</ion-content>
 
 <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="conducir">
       <ion-icon name="car-sport-outline"></ion-icon>
       <ion-label>Conducir</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="inicio">
+      <ion-icon name="search-circle-outline"></ion-icon>
+      <ion-label>Inicio</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="buscarViaje">
