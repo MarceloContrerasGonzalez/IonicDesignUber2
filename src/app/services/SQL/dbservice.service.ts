@@ -20,7 +20,7 @@ export class DbserviceService {
   constructor(private sqlite: SQLite, 
     private platform:Platform, 
     public toastController: ToastController) { 
-      this.presentToast("Componente cargado");
+      //this.presentToast("Componente cargado");
       this.crearBD();
     }
 
@@ -41,11 +41,11 @@ export class DbserviceService {
     try {
       await this.database.executeSql(this.tbUsuario,[]);
       //await this.database.executeSql(this.registro,[]);
-      this.presentToast("Tabla creada");
+      //this.presentToast("Tabla creada");
       this.cargarUsuario();
       this.isDbReady.next(true); 
     } catch (error) {
-      this.presentToast("Error en Crear Tabla: "+error);
+      //this.presentToast("Error en Crear Tabla: "+error);
     }
   };
 
@@ -95,7 +95,7 @@ export class DbserviceService {
 
   deleteAllUsuarios(){
     return this.database.executeSql('DELETE FROM activeUser').then(() =>{
-      this.presentToast("Usuarios eliminados");
+     // this.presentToast("Usuarios eliminados");
     });
   };
 

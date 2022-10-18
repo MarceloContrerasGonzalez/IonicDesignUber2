@@ -1,6 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import {  Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+
+//Dialog
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
+
 import { ApiClientService } from 'src/app/services/Api/api-client.service';
 
 //importar BDD storage
@@ -46,7 +51,8 @@ export class LoginPage implements OnInit {
 		public toastController: ToastController,
 		private animationCtrl: AnimationController,
 		private api: ApiClientService,
-		private dbservice: DbserviceService
+		private dbservice: DbserviceService,
+		public dialog: MatDialog
 	) {}
 	
 	ionViewWillEnter(){
@@ -65,7 +71,7 @@ export class LoginPage implements OnInit {
 	
 	guardarBDD() {
 		this.dbservice.addUsuario(this.user.usuario,this.user.password);
-		this.dbservice.presentToast("Usuario guardado");
+		//this.dbservice.presentToast("Usuario guardado");
 	}
 
 
@@ -82,33 +88,50 @@ export class LoginPage implements OnInit {
 
 	 
 	InSesion(){
-
+		let bolError = false;
 		/* validacion */
 		if (this.validador(this.user)){
 
-			for (let i = 1; i < this.alumnos.length; i++){
+			 for (let i = 1; i < this.alumnos.length; i++){
 				if (this.user.usuario == this.alumnos[i].username)
 				{
 					if (this.user.password == this.alumnos[i].password){
 						console.log("VALIDADO EL USUARIO");
 						this.guardarBDD();
 						localStorage.setItem('ingresado','true')
-						
 						this.router.navigate(['/home'])
+						break;
 					} else {
-						console.log("Username o password incorrecta");
+						//Si es que la contraseña esta mal dar error
+						this.dataUserError("El usuario y/o la contraseña son incorrectos");
+						break;
 					}
-					break;
+					
+				} 
+
+				if (i >= this.alumnos.length-1){
+					bolError = true;
 				}
-				
 			}
-			console.log("No habia nada")
+
+			if (bolError == true){
+				this.dataUserError("El usuario y/o la contraseña son incorrectos");
+			}
 		}else{
 			//this.presentToast("Error en "+this.field);
 			this.bolShowUserError = true;
 			this.bolShowPasswordError =true;
 		}
 	};
+
+	dataUserError(msg){
+		const dialogRef = this.dialog.open(DialogComponent, {
+			data: msg
+		  });
+		//console.log("Username o password incorrecta");
+
+		//this.presentToast("algo malo")
+	}
 	 
 	  ngOnInit() {
 		setTimeout(() => {

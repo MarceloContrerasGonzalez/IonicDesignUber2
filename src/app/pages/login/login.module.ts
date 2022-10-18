@@ -8,6 +8,10 @@ import { LoginPage } from './login.page';
 //Lottie
 import { LottieModule } from 'ngx-lottie';
 
+//Angular material Dialog
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
+
 export function playerFactory(){
   return import('lottie-web');//player
 }
@@ -18,7 +22,10 @@ export function playerFactory(){
     IonicModule,
     LoginPageRoutingModule,
     LottieModule.forRoot({ player: playerFactory }), 
+    MatDialogModule
   ],
-  declarations: [LoginPage]
+  entryComponents: [DialogComponent],
+  declarations: [LoginPage,
+    DialogComponent]
 })
 export class LoginPageModule {}
