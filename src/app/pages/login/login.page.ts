@@ -6,14 +6,12 @@ import { ApiClientService } from 'src/app/services/Api/api-client.service';
 //importar BDD storage
 //import { StorageServiceService } from 'src/app/services/Storage/storage-service.service';
 import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
-import { ActiveUser } from 'src/app/clases/active-user';
 
 //Splash screen
 import { AnimationOptions } from 'ngx-lottie';
 
 //Animaciones
 import { AnimationController } from '@ionic/angular';
-import { Observable, Subscriber, Subscription } from 'rxjs'; //añadi el subject
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
