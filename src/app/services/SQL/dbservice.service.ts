@@ -13,7 +13,6 @@ export class DbserviceService {
 
   public database: SQLiteObject;
   tbUsuario: string = "CREATE TABLE IF NOT EXISTS activeUser(id INTEGER PRIMARY KEY autoincrement, username VARCHAR(50) NOT NULL, password VARCHAR(50) NOT NULL);";
-  //registro:string = "INSERT or IGNORE INTO noticia(id, titulo,texto) VALUES (1,'Titulo de la noticia','texto de la noticia');";
   listaUsuarios = new BehaviorSubject([]);
   private isDbReady:
     BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -32,8 +31,7 @@ export class DbserviceService {
         location: 'default'
       }).then((db: SQLiteObject) => {
         this.database = db;
-        //this.presentToast("BD creada");
-        //llamo a crear la(s) tabla(s)
+        //llamo a crear la tabla
         this.crearTabla();
       }).catch(e => this.presentToast(e));
     })
@@ -56,7 +54,7 @@ export class DbserviceService {
     return this.database.executeSql('SELECT * FROM activeUser',[]).then(res=>{
       let items:ActiveUser[]=[];
 
-      //Devolver al usuario con la id mas alta en la tabla
+      //Devolver al usuario con la id mas alta en la tabla, al fin y al cabo, solo deberia guardar 1 usuario
       if(res.rows.length>0){
         items.push({
           id:res.rows.item(res.rows.length-1).id,
@@ -92,6 +90,12 @@ export class DbserviceService {
     return this.database.executeSql('UPDATE activeUser SET username=?, password=? WHERE id=?',data)
     .then(()=>{
       this.cargarUsuario();
+    });
+  };
+
+  deleteAllUsuarios(){
+    return this.database.executeSql('DELETE FROM activeUser').then(() =>{
+      this.presentToast("Usuarios eliminados");
     });
   };
 

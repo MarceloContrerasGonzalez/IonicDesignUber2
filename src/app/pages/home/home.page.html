@@ -1,37 +1,20 @@
-<!-- header -->
 <ion-header>
   <ion-toolbar>
     <img src="assets/icon/duocicon.png" alt="DuocIcon" id="duocIcon">
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-
-  <div class="Home_tittle">
-    
-    <h2>¿Que deseas hacer?</h2>
-  </div>
-
-  <div class="buttons_div">
-    <div id="car_div">
-      <img src="assets/icon/home_car.png" alt="Auto" id="CarIcon">
-      <div><span id="car_text">Conducir</span></div>
-    </div>
-    
-    <div id="search_div">
-      <img src="assets/icon/home_search.png" alt="buscar" id="SearchIcon">
-      <div><span id="search_text">Buscar viaje</span></div>
-    </div>
-  </div>
-  
-
-</ion-content>
 
 <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="conducir">
       <ion-icon name="car-sport-outline"></ion-icon>
       <ion-label>Conducir</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="inicio">
+      <ion-icon name="search-circle-outline"></ion-icon>
+      <ion-label>Inicio</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="buscarViaje">

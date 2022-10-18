@@ -23,19 +23,8 @@ import { Observable, Subscriber, Subscription } from 'rxjs'; //añadi el subject
 export class LoginPage implements OnInit {
 	@ViewChild('appLogo',{read: ElementRef, static:true}) logo: ElementRef;
 
-	modalController: any;
-	
-	//BDD
-	alumno:any={
-		id: null,
-		nombre: "",
-		username: "",
-		password: ""
-	};
+	//Api conexion github
 	alumnos:any;
-	//persistencia SQL
-	usuarios: ActiveUser[];
-	
 
 	//Blur pero con variables por que no se como integrar blur aun
 	bolShowUserError: boolean = false;
@@ -54,8 +43,6 @@ export class LoginPage implements OnInit {
 	  }
 	bolShowSplash: boolean = true ;//Dejar al splash screen visible por defecto
 
-
-
 	constructor(
 		private router: Router,
 		public toastController: ToastController,
@@ -65,21 +52,26 @@ export class LoginPage implements OnInit {
 	) {}
 	
 	ionViewWillEnter(){
+		//rescartar a los usuarios de la api para manejarlos y validarlos al iniciar sesion
 		this.getUsuarios();
 	}
 
 	getUsuarios(){
-
 		this.api.getUsuarios().subscribe((data)=>{
 		  let jsonData =  Object.values(data) //recojer los datos del objeto del api y transformalos
 		  let alumSchema = Object.values(jsonData[0]) //Tomar los datos del primer objeto, buscar dentro del esquema de id 0 (alumnos) y pasarlo a la variable 2 como objeto
 
 		  this.alumnos = alumSchema;//le pasamos la variable 
-
 		});
-	  };
+	};
+	
+	guardarBDD() {
+		this.dbservice.addUsuario(this.user.usuario,this.user.password);
+		this.dbservice.presentToast("Usuario guardado");
+	}
 
 
+	 //Validar que los campos no esten vacios
 	 validador(model: any){
 		for (var [key, value] of Object.entries(model)) {
 			if (value == ""){
@@ -90,12 +82,8 @@ export class LoginPage implements OnInit {
 		return true;
 	 }; 
 
-	 guardarBDD() {
-		this.dbservice.addUsuario(this.user.usuario,this.user.password);
-		this.dbservice.presentToast("USuario guardado");
-	 }
-	
-	 InSesion(){
+	 
+	InSesion(){
 
 		/* validacion */
 		if (this.validador(this.user)){
@@ -106,6 +94,8 @@ export class LoginPage implements OnInit {
 					if (this.user.password == this.alumnos[i].password){
 						console.log("VALIDADO EL USUARIO");
 						this.guardarBDD();
+						localStorage.setItem('ingresado','true')
+						
 						this.router.navigate(['/home'])
 					} else {
 						console.log("Username o password incorrecta");
@@ -120,19 +110,9 @@ export class LoginPage implements OnInit {
 			this.bolShowUserError = true;
 			this.bolShowPasswordError =true;
 		}
-	  };
+	};
 	 
 	  ngOnInit() {
-
-		//Cargar la base de datos
-		this.dbservice.dbState().subscribe((res)=>{
-			if(res){
-			  this.dbservice.fetchUsuario().subscribe(item=>{
-				this.usuarios=item;
-			  })
-			}
-		  })
-
 		setTimeout(() => {
 			this.bolShowSplash = false;
 
@@ -158,9 +138,5 @@ export class LoginPage implements OnInit {
 		});
 		toast.present();
 	  };
-
-	  
-	  
-	
 }
 
