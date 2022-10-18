@@ -1,27 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiClientService } from 'src/app/services/api-client.service';
+import { ApiClientService } from 'src/app/services/Api/api-client.service';
 
 @Component({
-  selector: 'app-buscar',
-  templateUrl: './buscar.page.html',
-  styleUrls: ['./buscar.page.scss'],
+  selector: 'app-buscar-viajes',
+  templateUrl: './buscar-viajes.component.html',
+  styleUrls: ['./buscar-viajes.component.scss'],
 })
-/*
-export class BuscarPage implements OnInit {
+export class BuscarViajesComponent implements OnInit {
+  ngOnInit() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
-*/
-
-export class BuscarPage{
-  usuario:any;
-  usuarios:any;
-
-  viajes:any;
   viaje:any={
     userId: null,
     id:null,
@@ -30,20 +17,20 @@ export class BuscarPage{
     passengers: null,
     price: null
   };
+  viajes:any;
 
   compareWith:any;
 
   constructor(private api: ApiClientService){}
 
   ionViewWillEnter(){
-    //this.getUsuarios();
     this.getViajes();
   }
 
-
-  //getUsuarios(){};
   getViajes(){
     this.api.getViajes().subscribe((data)=>{
+      console.log("----------Dataviaje----------");
+      console.log(data);
       this.viajes=data;
       this.viajes.reverse();
     });

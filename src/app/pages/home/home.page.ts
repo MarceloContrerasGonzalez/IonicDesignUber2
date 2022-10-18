@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+
 
 
 @Component({
@@ -9,24 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class HomePage {
-  user:any;
-
-  constructor(
-   
-    private activeroute: ActivatedRoute, 
-    private router: Router) 
-
-    {
-    this.activeroute.queryParams.subscribe(params => {
-      if (this.router.getCurrentNavigation().extras.state) {
-        this.user = this.router.getCurrentNavigation().extras.state.user;
-        console.log(this.user)
-      }
-    });
-  }
-
-  
+  constructor() {}
     ngOnInit() {
-    }
+    };
   
 }

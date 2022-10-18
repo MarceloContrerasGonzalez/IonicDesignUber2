@@ -1,0 +1,14 @@
+<!-- header -->
+
+
+<ion-content [fullscreen]="true">
+  <div class="Home_tittle">
+    <h1>¡Bienvenido</h1>
+
+    <h2 *ngFor="let u of usuarios">{{u.username}}</h2>
+    <br>
+    <img src="assets/img/user.png" alt="">
+    <h2>Que deseas hacer?</h2>
+    <ion-button expand="block" (click)="Cerrar()" >cerrar sesion</ion-button>
+  </div>
+</ion-content>

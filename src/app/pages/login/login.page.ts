@@ -1,6 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { ApiClientService } from 'src/app/services/Api/api-client.service';
+
+//importar BDD storage
+//import { StorageServiceService } from 'src/app/services/Storage/storage-service.service';
+import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
 
 //Splash screen
 import { AnimationOptions } from 'ngx-lottie';
@@ -16,7 +21,8 @@ import { AnimationController } from '@ionic/angular';
 export class LoginPage implements OnInit {
 	@ViewChild('appLogo',{read: ElementRef, static:true}) logo: ElementRef;
 
-	modalController: any;
+	//Api conexion github
+	alumnos:any;
 
 	//Blur pero con variables por que no se como integrar blur aun
 	bolShowUserError: boolean = false;
@@ -35,15 +41,35 @@ export class LoginPage implements OnInit {
 	  }
 	bolShowSplash: boolean = true ;//Dejar al splash screen visible por defecto
 
-
-
 	constructor(
 		private router: Router,
 		public toastController: ToastController,
-		private animationCtrl: AnimationController
+		private animationCtrl: AnimationController,
+		private api: ApiClientService,
+		private dbservice: DbserviceService
 	) {}
 	
+	ionViewWillEnter(){
+		//rescartar a los usuarios de la api para manejarlos y validarlos al iniciar sesion
+		this.getUsuarios();
+	}
 
+	getUsuarios(){
+		this.api.getUsuarios().subscribe((data)=>{
+		  let jsonData =  Object.values(data) //recojer los datos del objeto del api y transformalos
+		  let alumSchema = Object.values(jsonData[0]) //Tomar los datos del primer objeto, buscar dentro del esquema de id 0 (alumnos) y pasarlo a la variable 2 como objeto
+
+		  this.alumnos = alumSchema;//le pasamos la variable 
+		});
+	};
+	
+	guardarBDD() {
+		this.dbservice.addUsuario(this.user.usuario,this.user.password);
+		this.dbservice.presentToast("Usuario guardado");
+	}
+
+
+	 //Validar que los campos no esten vacios
 	 validador(model: any){
 		for (var [key, value] of Object.entries(model)) {
 			if (value == ""){
@@ -52,27 +78,39 @@ export class LoginPage implements OnInit {
 			}
 		}
 		return true;
-	 };
-	
-	 InSesion(){
+	 }; 
+
+	 
+	InSesion(){
 
 		/* validacion */
 		if (this.validador(this.user)){
-			let navigationExtras: NavigationExtras={
-				state:{
-					user: this.user
+
+			for (let i = 1; i < this.alumnos.length; i++){
+				if (this.user.usuario == this.alumnos[i].username)
+				{
+					if (this.user.password == this.alumnos[i].password){
+						console.log("VALIDADO EL USUARIO");
+						this.guardarBDD();
+						localStorage.setItem('ingresado','true')
+						
+						this.router.navigate(['/home'])
+					} else {
+						console.log("Username o password incorrecta");
+					}
+					break;
 				}
-			};
-			this.router.navigate(['/home'], navigationExtras)
+				
+			}
+			console.log("No habia nada")
 		}else{
 			//this.presentToast("Error en "+this.field);
 			this.bolShowUserError = true;
-			this.bolShowPasswordError = true;
+			this.bolShowPasswordError =true;
 		}
-	  };
+	};
 	 
 	  ngOnInit() {
-
 		setTimeout(() => {
 			this.bolShowSplash = false;
 
@@ -98,9 +136,5 @@ export class LoginPage implements OnInit {
 		});
 		toast.present();
 	  };
-
-	  
-	  
-	
 }
 
