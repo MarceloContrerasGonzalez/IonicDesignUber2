@@ -12,12 +12,13 @@ import { ActiveUser } from 'src/app/clases/active-user';
 export class DbserviceService {
 
   public database: SQLiteObject;
-  tbUsuario: string = "CREATE TABLE IF NOT EXISTS activeUser(id INTEGER PRIMARY KEY autoincrement, username VARCHAR(50) NOT NULL, password VARCHAR(50) NOT NULL);";
+  tbUsuario: string = "CREATE TABLE IF NOT EXISTS activeUser(id INTEGER PRIMARY KEY autoincrement, nombre VARCHAR(80) NOT NULL, username VARCHAR(50) NOT NULL, password VARCHAR(50) NOT NULL);";
   listaUsuarios = new BehaviorSubject([]);
   private isDbReady:
     BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  constructor(private sqlite: SQLite, 
+  constructor(
+    private sqlite: SQLite, 
     private platform:Platform, 
     public toastController: ToastController) { 
       //this.presentToast("Componente cargado");
@@ -40,8 +41,6 @@ export class DbserviceService {
   async crearTabla() {
     try {
       await this.database.executeSql(this.tbUsuario,[]);
-      //await this.database.executeSql(this.registro,[]);
-      //this.presentToast("Tabla creada");
       this.cargarUsuario();
       this.isDbReady.next(true); 
     } catch (error) {
@@ -58,6 +57,7 @@ export class DbserviceService {
       if(res.rows.length>0){
         items.push({
           id:res.rows.item(res.rows.length-1).id,
+          nombre: res.rows.item(res.rows.length-1).nombre,
           username:res.rows.item(res.rows.length-1).username,
           password:res.rows.item(res.rows.length-1).password
         });  
@@ -77,9 +77,9 @@ export class DbserviceService {
     });
   };
 
-  addUsuario(username,password){
-    let data=[username,password];
-    return this.database.executeSql('INSERT INTO activeUser(username,password) VALUES(?,?)',data)
+  addUsuario(name,username,password){
+    let data=[name,username,password];
+    return this.database.executeSql('INSERT INTO activeUser(nombre, username,password) VALUES(?, ?,?)',data)
     .then(()=>{
       this.cargarUsuario();
     });
@@ -105,6 +105,8 @@ export class DbserviceService {
       this.cargarUsuario();
     });
   };
+
+  
 
   dbState(){
     return this.isDbReady.asObservable();

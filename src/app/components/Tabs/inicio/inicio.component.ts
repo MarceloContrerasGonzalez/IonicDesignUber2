@@ -36,7 +36,7 @@ export class InicioComponent implements OnInit {
 
   Cerrar(){
     //console.log("boton")
-    this.presentToast("Llamado");
+    //this.presentToast("Llamado");
     this.servicioBD.deleteAllUsuarios();
     localStorage.removeItem('ingresado')
     this.router.navigate(['/login']);

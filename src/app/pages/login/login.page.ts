@@ -69,8 +69,8 @@ export class LoginPage implements OnInit {
 		});
 	};
 	
-	guardarBDD() {
-		this.dbservice.addUsuario(this.user.usuario,this.user.password);
+	guardarBDD(name, user, pass) {
+		this.dbservice.addUsuario(name,user,pass);
 		//this.dbservice.presentToast("Usuario guardado");
 	}
 
@@ -96,7 +96,7 @@ export class LoginPage implements OnInit {
 				if ((this.user.usuario == this.alumnos[i].username) && (this.user.password == this.alumnos[i].password))
 				{
 					console.log("VALIDADO EL USUARIO");
-					this.guardarBDD();
+					this.guardarBDD(this.alumnos[i].nombre,this.user.usuario,this.user.password);
 					localStorage.setItem('ingresado','true')
 					this.router.navigate(['/home'])
 					break;
