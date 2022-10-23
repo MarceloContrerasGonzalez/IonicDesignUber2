@@ -102,7 +102,8 @@ export class ConducirComponent implements OnInit {
     const modalAdd = await this.modalController.create({
       component: MapsComponent,
       mode: 'ios',
-      swipeToClose: true/*,
+      /* dejo este en falso para que al deslizar no se cierre la ventana */
+      swipeToClose: false/*,
       componentProps: {position: positionInput}*/
     });
     await modalAdd.present();
