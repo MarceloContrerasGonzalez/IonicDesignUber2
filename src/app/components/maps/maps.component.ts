@@ -17,6 +17,8 @@ export class MapsComponent implements OnInit {
     lng: -71.533166
   };
 
+  direccion:any ;
+
   label = {
     titulo: 'Ubicacion',
     subtitulo: 'Mi Destino'
@@ -24,7 +26,7 @@ export class MapsComponent implements OnInit {
 
   map: any;
   infowindow: any;
-  positionSet: any
+  positionSet: any;
   marker: any;
 
   @ViewChild('map', { read: ElementRef, static: false }) mapRef: ElementRef;
@@ -51,7 +53,7 @@ export class MapsComponent implements OnInit {
     });
     this.clickHandleEvent();
     this.infowindow = new google.maps.InfoWindow();
-    this.addMarker(position);
+    /* this.addMarker(position); */
     this.setInfoWindow(this.marker, this.label.titulo, this.label.subtitulo);
 
   }
@@ -71,14 +73,26 @@ export class MapsComponent implements OnInit {
   }
 
   addMarker(position: any): void {
+    const geocoder = new google.maps.Geocoder();
 
     let latLng = new google.maps.LatLng(position.lat, position.lng);
-  
+
     this.marker.setPosition(latLng);
     //centra el mapa a la posicion seleccionada
     this.map.panTo(position);
     this.positionSet = position;
-  
+    geocoder.geocode({ location: position })
+      .then((response) => {
+        if (response.results[0]) {
+          this.direccion = response.results[0].formatted_address
+          console.log(this.direccion);
+          this.label.titulo = 'Direccion';
+          this.label.subtitulo = this.direccion;
+          this.setInfoWindow(this.marker, this.label.titulo, this.label.subtitulo);
+
+        }
+      })
+
   }
 
   setInfoWindow(marker: any, titulo: string, subtitulo: string) {
