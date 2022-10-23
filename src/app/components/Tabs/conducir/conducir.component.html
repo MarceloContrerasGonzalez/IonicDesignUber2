@@ -3,35 +3,72 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <form class="form_vehiculo-form">
-    <p>
-      <mat-form-field class="mat_field first_margin" appearance="fill">
-        <mat-label>Cantidad maxima de pasajeros (1-6)</mat-label>
-        <input matInput type="number" min="1" max="6" placeholder="4">
-      </mat-form-field>
+<ion-content [ngSwitch]="menuDepth">
 
-      <mat-form-field class="mat_field" appearance="fill" floatLabel="always">
-        <mat-label>Tarifa por persona</mat-label>
-        <input matInput type="number" class="example-right-align" placeholder="0">
-        <span matPrefix>$&nbsp;</span>
-      </mat-form-field>
+  <!-- Profundidad 2, estas en el viaje -->
+  <div *ngSwitchCase="2">
+    <h1>Aqui iria el mapa</h1>
+  </div>
 
-      <mat-form-field class="mat_field" appearance="fill">
-        <mat-label>Patente del vehiculo</mat-label>
-        <input matInput placeholder="XX-XX-10">
-      </mat-form-field>
+  <!-- Profundidad 1, creaste un viaje, pero esperas pasajeros -->
+  <div *ngSwitchCase="1">
+    <h1>Esperando pasajeros</h1>
+    <p>{{viajes[idViaje].pasajeros}}/{{viajes[idViaje].maxPasajeros}}</p>
+    <!-- <ion-item *ngFor="let viaje of viajes">
+      <h3>{{viaje.pasajeros}}/{{viaje.maxPasajeros}}</h3>
+    </ion-item> -->
 
-      <mat-form-field class="mat_field " appearance="fill">
-        <mat-label>Informacion adicional</mat-label>
-        <textarea class="mat_area" matInput #info_extra  maxlength="240"></textarea>
-        <mat-hint>(Opcional)</mat-hint>
-        <mat-hint align="end">{{info_extra.value.length}} / 240</mat-hint>
-      </mat-form-field>
-    </p>
-  </form>
+    <ion-button color="danger" (click)="eliminarViaje()">Terminar el viaje</ion-button>
+      <ion-button color="success">Empezar el viaje</ion-button>
+  </div>
 
-  <ion-button color="secondary" id="trip_button">Preparar el viaje</ion-button>
+   <!-- Default, menu 0, crear un viaje -->
+   <div *ngSwitchDefault>
+    <form class="form_vehiculo-form">
+      <!-- <p> -->
+        <mat-form-field class="mat_field first_margin" appearance="fill">
+          <mat-label>Cantidad maxima de pasajeros (1-6)</mat-label>
+          <input matInput type="number" min="1" max="6" placeholder="4" name="pasajero" [(ngModel)]="form.pasajero">
+        </mat-form-field>
 
+        <mat-form-field class="mat_field" appearance="fill" floatLabel="always">
+          <mat-label>Tarifa por persona</mat-label>
+          <input matInput type="number" class="example-right-align" placeholder="0" name="tarifa" [(ngModel)]="form.tarifa">
+          <span matPrefix>$&nbsp;</span>
+        </mat-form-field>
+
+        <mat-form-field class="mat_field" appearance="fill">
+          <mat-label>Destino</mat-label>
+          <input matInput placeholder="Viña del mar, bellavista" name="destino" [(ngModel)]="form.destino">
+        </mat-form-field>
+
+        <!-- <ion-button (click)="llamarComponent()"> Seleccionar destino</ion-button>-->
+        <ion-item (click)="addDirection()">
+            <ion-label>Ubicacion</ion-label>
+
+            <ion-buttons slot="end">
+              <ion-button>
+                   <ion-icon slot="icon-only" color="danger" name="location"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+        </ion-item>
+        
+        <mat-form-field class="mat_field" appearance="fill">
+          <mat-label>Patente del vehiculo</mat-label>
+          <input matInput placeholder="XX-XX-10" name="patente" [(ngModel)]="form.patente">
+        </mat-form-field>
+
+        <mat-form-field class="mat_field " appearance="fill">
+          <mat-label>Informacion adicional</mat-label>
+          <textarea class="mat_area" matInput #info_extra  maxlength="240" name="informacion" [(ngModel)]="form.informacion"></textarea>
+          <mat-hint>(Opcional)</mat-hint>
+          <mat-hint align="end">{{info_extra.value.length}} / 240</mat-hint>
+        </mat-form-field>
+      <!-- </p> -->
+    </form>
+    
+
+    <ion-button color="secondary" id="trip_button" (click)="formSubmit()">Preparar el viaje</ion-button>
+   </div>
 
 </ion-content>

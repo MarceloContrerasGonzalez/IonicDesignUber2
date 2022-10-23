@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
-//importar BDD storage
+//importar BD SQlite
 import { ActiveUser } from 'src/app/clases/active-user';
 import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
-import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-inicio',
@@ -32,7 +33,6 @@ export class InicioComponent implements OnInit {
       });
 
   }
-
 
   Cerrar(){
     //console.log("boton")

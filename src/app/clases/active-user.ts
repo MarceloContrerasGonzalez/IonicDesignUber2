@@ -3,4 +3,5 @@ export class ActiveUser {
     nombre: string;
     username: string;
     password: string;
+    viajeId;
 }
