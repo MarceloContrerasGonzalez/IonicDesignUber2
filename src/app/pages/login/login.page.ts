@@ -68,7 +68,8 @@ export class LoginPage implements OnInit {
 		  this.alumnos = alumSchema;//le pasamos la variable 
 		});
 	};
-	
+
+	//Crea al usuario y lo guarda en la base de datos
 	guardarBDD(id, name, user, pass) {
 		this.dbservice.addUsuario(id, name,user,pass);
 		//this.dbservice.presentToast("Usuario guardado");

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+
 import { ModalController } from '@ionic/angular';
 
 //componente maps
@@ -9,6 +10,10 @@ import { MapsComponent } from '../../maps/maps.component';
 import { ActiveUser } from 'src/app/clases/active-user';
 import { Viajes } from 'src/app/clases/viajes';
 import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
+
+//Dialog angular material
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-conducir',
@@ -20,12 +25,16 @@ export class ConducirComponent implements OnInit {
   idViaje;//si le pongo any me da error, si le pongo number no puedo hacerle un index en el scrip delete, mejor no ponerle nada
   conductor: ActiveUser[];
   menuDepth: Number = 0;
+  ubicacion: any;
+
+  //validador
+  field: String = "";
   
 
   //tripForm: FormGroup;
   form={
-		pasajero: null,//Cantidad de pasajeros maximos
-		tarifa: null,
+		pasajero: 0,//Cantidad de pasajeros maximos
+		tarifa: 0,
     destino: "",
     patente: "",
     informacion: ""
@@ -34,7 +43,8 @@ export class ConducirComponent implements OnInit {
   constructor(
     public toastController: ToastController,
     private servicioBD: DbserviceService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    public dialog: MatDialog
   ) { }
 
   
@@ -61,11 +71,10 @@ export class ConducirComponent implements OnInit {
   checkIDviaje(){
      //Recorrer la base de datos para detectar si eres conductor de un viaje
      for (let i = 0; i < this.viajes.length; i++){
-
       if (this.viajes[i].Userid == this.conductor[0].id){
         this.idViaje = i;
+
         //si encuentra que eres dueño de un viaje, verificar su estado , dependiendo de eso se cambiara el ngSwitch
-        
         if(this.viajes[i].estado == 0){
             //si estas esperando pasajeros
             this.menuDepth = 1;
@@ -84,28 +93,67 @@ export class ConducirComponent implements OnInit {
     this.menuDepth = 0;
   }
 
+  empezarViaje(){
+    this.servicioBD.updateEstadoViaje(1,this.viajes[this.idViaje].id);//el 1 es el estado de que el viaje ya empezo, evitara que mas clientes reserven
+    this.menuDepth = 2;
+  }
+
   crearViaje(){
     let userID = this.conductor[0].id;
-    //this.presentToast(this.conductor[0].id + "")
     //El viaje empezara con 0 pasajeros a bordo y en el estado 0 de viaje
-    this.servicioBD.addViaje(userID, this.form.pasajero ,this.form.pasajero,this.form.tarifa,this.form.destino,this.form.patente,this.form.informacion, 0);
-    this.presentToast(userID + "/ " + this.form.pasajero + " / " + this.form.tarifa + " / " + this.form.patente + " / " + this.form.destino + " / " + this.form.informacion);
+    this.servicioBD.addViaje(userID, 0 ,this.form.pasajero,this.form.tarifa,this.form.destino,this.form.patente,this.form.informacion, 0);
   }
 
   formSubmit(){
-    this.crearViaje();
-    this.checkIDviaje();
-    this.menuDepth = 1;
+    if (this.validadorForm(this.form)){
+      this.crearViaje();
+      this.checkIDviaje();
+      this.menuDepth = 1;
+    }
+    
   }
+
+  validadorForm(model: any){
+		for (var [key, value] of Object.entries(model)) {
+      switch(key){
+        case 'pasajero':{
+          if ((value <= 0) || (value > 6)){
+            this.callDialog("La cantidad de pasajeros debe ser mayor a 0 y menor a 6");
+            return false;
+          }
+        }
+
+        case 'tarifa':{
+          if (value <= 0){
+            this.callDialog("La tarifa debe ser un numero en positivo");
+            return false;
+          }
+        }
+
+        default:{
+          if ((key != 'informacion') && (value == "")){
+            this.callDialog("La casilla de " + key + " no debe estar vacia");
+            return false;
+          }
+        }
+       
+      }
+		}
+		return true;
+	 }; 
 
   async addDirection(){
     const modalAdd = await this.modalController.create({
       component: MapsComponent,
       mode: 'ios',
-      swipeToClose: true/*,
-      componentProps: {position: positionInput}*/
+      swipeToClose: false
     });
-    await modalAdd.present();
+    await modalAdd.present(); 
+
+    const {data} = await modalAdd.onWillDismiss();
+    if (data){
+       this.form.destino = data.pos;
+    }
   }
 
   async presentToast(msg:string) {
@@ -115,5 +163,15 @@ export class ConducirComponent implements OnInit {
 		});
 		toast.present();
 	  };
+
+    callDialog(msg: string){
+      //Llamar al componente dialogo
+      this.dialog.open(DialogComponent, {
+        data: msg
+      });
+    }
+
+
+    
   
 }

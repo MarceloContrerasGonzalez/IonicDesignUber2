@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
 
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+
 @NgModule({
   declarations: [
     AppComponent,  
@@ -29,7 +30,8 @@ import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
   ],
   //entryComponents: [DialogComponent],
   providers: [
-    { provide: RouteReuseStrategy, 
+    { 
+      provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 
     }, SQLite],
   bootstrap: [AppComponent],

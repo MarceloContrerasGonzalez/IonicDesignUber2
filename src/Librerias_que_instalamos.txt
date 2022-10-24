@@ -21,3 +21,7 @@ npm install @awesome-cordova-plugins/sqlite
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 -importar SQLite en providers
 providers: [{}, SQLite]
+
+<Maps>
+npm install cordova-plugin-geolocation
+npm install @awesome-cordova-plugins/geolocation

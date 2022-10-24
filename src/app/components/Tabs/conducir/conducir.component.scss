@@ -1,3 +1,4 @@
+/* Seccion del formulario */
 #trip_button{
     //bottom: 10px;
     //margin-bottom: 5%;
@@ -18,12 +19,79 @@
 }
 
 .mat_area{
-    height: 105px;
-    max-height: 105px;
+    height: 90px;
+    max-height: 90px;
 }
 
 .form_vehiculo-form {
     min-width: 150px;
     max-width: 500px;
     width: 100%;
+}
+
+.destino{
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    height: auto;
+}
+
+.label_Destino{
+    margin-top: 1%;
+}
+
+
+/* Seccion de esperando pasajeros */
+.waitingTittle{
+    margin-top: 10px;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration: solid;
+    font-weight: bold;
+    font-size: 50px;
+    line-height: normal;
+}
+
+.waitingDiv{
+    margin-top: 45%;
+}
+
+.waitingDiv{
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+}
+.waitingDiv img{
+    float: left;
+    width: 25%;
+    height: auto;
+}
+
+.waitingDiv p{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 40px;
+    text-align: center;
+}
+
+.waitingButtons{
+    position: absolute;
+    bottom: 10px;
+}
+
+/*Viajando... - Terminar viaje*/
+
+#finishButton{
+    margin-left: 25%;
+    margin-left: 25%;
+    margin-top: 20%;
+}
+
+
+.carGif{
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 20%;
 }

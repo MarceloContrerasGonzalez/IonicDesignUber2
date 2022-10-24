@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 //import { Noticia } from '../clases/noticia';
 
-//IMportar las clases de las tablas
+//Importar las clases de las tablas
 import { ActiveUser } from 'src/app/clases/active-user';
 import { Viajes } from 'src/app/clases/viajes';
 
@@ -18,8 +19,9 @@ export class DbserviceService {
   //tabla de usuarios (para routeguard)
   tbUsuario: string = "CREATE TABLE IF NOT EXISTS activeUser(id INTEGER PRIMARY KEY autoincrement, nombre VARCHAR(80) NOT NULL, username VARCHAR(50) NOT NULL, password VARCHAR(50) NOT NULL, viajeId INTEGER NOT NULL);";
   listaUsuarios = new BehaviorSubject([]);
+  
   //Tabla de viajes
-  tbViajes: string = "CREATE TABLE IF NOT EXISTS viajesActivos(id INTEGER PRIMARY KEY autoincrement, Userid INTEGER NOT NULL, pasajeros INTEGER(1) NOT NULL, maxPasajeros INTEGER(1) NOT NULL, tarifa INTEGER(5) NOT NULL, destino VARCHAR(100) NOT NULL, patente VARCHAR(6) NOT NULL, informacion VARCHAR(240) NOT NULL, estado INTEGER NOT NULL);";
+  tbViajes: string = "CREATE TABLE IF NOT EXISTS viajesActivos(id INTEGER PRIMARY KEY autoincrement, Userid INTEGER NOT NULL, pasajeros INTEGER(1) NOT NULL, maxPasajeros INTEGER(1) NOT NULL, tarifa INTEGER(5) NOT NULL, destino VARCHAR(100) NOT NULL, patente VARCHAR(6) NOT NULL, informacion VARCHAR(240), estado INTEGER NOT NULL);";
   listaViajes = new BehaviorSubject([]);
   quant: number;
   
@@ -29,14 +31,14 @@ export class DbserviceService {
   constructor(
     private sqlite: SQLite, 
     private platform:Platform, 
-    public toastController: ToastController) { 
+    public toastController: ToastController
+  ) { 
       //this.presentToast("Componente cargado");
       this.crearBD();
-    }
+  }
 
   crearBD() {
     this.platform.ready().then(() => {
-
       this.sqlite.create({
         name: 'data.db',
         location: 'default'
@@ -86,19 +88,6 @@ export class DbserviceService {
     });
   };
 
-  /*async cargarIdUsuario(){
-    let id = 0;
-
-    await this.database.executeSql('SELECT id FROM activeUser',[]).then(res=>{
-      if(res.rows.length>0){
-          id = res.rows.item(res.rows.length-1).id;
-         return id;
-         //this.presentToast(id + "")
-      }
-    });
-  };
-  */
-
   fetchUsuario(): Observable<ActiveUser[]> {
     return this.listaUsuarios.asObservable();
   };
@@ -110,6 +99,7 @@ export class DbserviceService {
     });
   };
 
+  //Actualiza si el usuario esta en algun viaje o no
   updateViajeUsuario(viajeId,id){
     let data=[viajeId,id];
     return this.database.executeSql('UPDATE activeUser SET viajeId=? WHERE id=?',data).then(()=>{
@@ -136,8 +126,10 @@ export class DbserviceService {
     });
   };
 
-  /* Tabla de viajes que estan activos */
 
+
+
+  /* Tabla de viajes que estan activos */
   cargarViajes(){
     return this.database.executeSql('SELECT * FROM viajesActivos',[]).then(res=>{
       let items: Viajes[]=[];
@@ -146,7 +138,7 @@ export class DbserviceService {
       if(res.rows.length>0){
         for (var i = 0; i < res.rows.length; i++) {
           items.push({
-            id:res.rows.item(i).id,
+            id: res.rows.item(i).id,
             Userid: res.rows.item(i).Userid,
             pasajeros: res.rows.item(i).pasajeros,
             maxPasajeros:res.rows.item(i).maxPasajeros,
@@ -177,23 +169,20 @@ export class DbserviceService {
   checkViaje(id){
     return this.database.executeSql('SELECT * FROM viajesActivos WHERE id=?',[id]).then(res=>{
       return res.rows.length;
-      //return res.rows.length;
-      //this.presentToast(res.rows.length);
-      //this.quant = res.rows.length;//res.asObservable();
-      //return this.quant;
-      /*if(res.rows.length>0){
-        this.presentToast("si existia la columna")
-      } else {
-        this.presentToast("NO existia la columna")
-      }*/
     });
-    
   }
 
-  //Suma 1 mas a la cantidad de pasajeros
+  //Suma o resta 1 mas a la cantidad de pasajeros
   updatePasajerosViaje(cant,id){
     let data=[cant,id];
     return this.database.executeSql('UPDATE viajesActivos SET pasajeros=? WHERE id=?',data).then(()=>{
+      this.cargarViajes();
+    });
+  }
+
+  updateEstadoViaje(est,id){
+    let data=[est,id];
+    return this.database.executeSql('UPDATE viajesActivos SET estado=? WHERE id=?',data).then(()=>{
       this.cargarViajes();
     });
   }
