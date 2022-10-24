@@ -52,7 +52,7 @@ export class BuscarViajesComponent implements OnInit {
       let q = await this.verificarViaje(this.pasajero[0].viajeId);
 
       if (q <= 0){
-        this.presentToast("lamentablemente, el viaje que tenia reservado ya no esta disponible");
+        this.presentToast("hay viaje, no existe");
         this.servicioBD.updateViajeUsuario(-1,this.pasajero[0].id); //el -1 le indica a la carga de la BD que el usuario ya no tiene reservacion en algun viaje
         this.menuDepth = 0;
       } 
@@ -65,11 +65,11 @@ export class BuscarViajesComponent implements OnInit {
           let q = await this.verificarViaje(this.viajes[this.idViaje].id);
 
           if (q <= 0){
-            this.presentToast("lamentablemente este viaje ya no esta disponible");
+            this.presentToast("no existia viaje menu 1");
             this.menuDepth = 0;
           }
         } catch (error) {
-          this.presentToast("lamentablemente este viaje ya no esta disponible");
+          this.presentToast("error del try");
           this.menuDepth = 0;
         }
         
@@ -117,16 +117,12 @@ export class BuscarViajesComponent implements OnInit {
         if (this.verificarViaje(this.viajes[this.idViaje].id)){
           //luego verifica que el viaje no haya empezado y que queden asientos
             if ((this.viajes[this.idViaje].pasajeros >= this.viajes[this.idViaje].maxPasajeros) || (this.viajes[this.idViaje].estado != 0)){
-              this.presentToast("Lamentablemente este vehiculo ya no esta disponible")
+              this.presentToast("el viaje estaba lleno o empezo")
             } else {
               this.menuDepth = 1;
             }
             break;
           }
-        } else {
-          //si el viaje no existe, significa que fue cancelado
-          this.presentToast("Lamentablemente este vehiculo ya no esta disponible")
-          break;
         }
     }
   }
@@ -143,7 +139,7 @@ export class BuscarViajesComponent implements OnInit {
         //luego verifica que el viaje no haya empezado y que queden asientos
         if ((this.viajes[this.idViaje].pasajeros >= this.viajes[this.idViaje].maxPasajeros) || (this.viajes[this.idViaje].estado != 0)){
             //si el viaje ya empezo o no quedan asientos disponibles
-            this.presentToast("Lamentablemente este vehiculo ya no esta disponible")
+            this.presentToast("al reservar estaba lleno o empezo")
             this.menuDepth = 0;
         } else {
             this.servicioBD.updatePasajerosViaje(this.viajes[this.idViaje].pasajeros+1,this.viajes[this.idViaje].id);
@@ -152,11 +148,11 @@ export class BuscarViajesComponent implements OnInit {
         }
       } else {
         //Si el viaje ya no existe (se cancelo), volver al menu
-        this.presentToast("Lamentablemente este vehiculo ya no esta disponible")
+        this.presentToast("el viaje se cancelo al reservar")
         this.menuDepth = 0;
       }
     } catch (error) {
-      this.presentToast("lamentablemente este viaje ya no esta disponible");
+      this.presentToast("error del try al reservar");
       this.menuDepth = 0;
     }
   }

@@ -49,9 +49,27 @@ export class ConducirComponent implements OnInit {
 
   
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.idViaje = 0;
     //Cargar la base de datos
-    await this.servicioBD.dbState().subscribe((res) => {
+    this.cargarBdd();
+    this.checkIDviaje();
+  }
+
+  ionViewWillEnter(){
+    this.menuDepth = 0;
+    this.idViaje = 0;
+
+    console.log("//////////////////////////////////////////////")
+    console.log("ionwillenter: idviaje" + this.idViaje)
+
+    //Actualizar la base de datos
+    this.cargarBdd();
+    this.checkIDviaje();
+  }
+
+  cargarBdd(){
+    this.servicioBD.dbState().subscribe((res) => {
       if (res) {
         //viajes activos
         this.servicioBD.fetchViajes().subscribe(item => {
@@ -64,15 +82,16 @@ export class ConducirComponent implements OnInit {
         });
       }
     });
-    this.idViaje = 0;
-    this.checkIDviaje();
   }
 
   checkIDviaje(){
      //Recorrer la base de datos para detectar si eres conductor de un viaje
      for (let i = 0; i < this.viajes.length; i++){
       if (this.viajes[i].Userid == this.conductor[0].id){
+        this.presentToast(this.viajes[i].Userid + " / " + this.conductor[0].id)
         this.idViaje = i;
+        console.log("///////////////////////////////////")
+        console.log("nuevo id viaje: " + this.idViaje)
 
         //si encuentra que eres dueño de un viaje, verificar su estado , dependiendo de eso se cambiara el ngSwitch
         if(this.viajes[i].estado == 0){
@@ -83,8 +102,9 @@ export class ConducirComponent implements OnInit {
           this.menuDepth = 2;
         }
         break;//solo deberias tener un viaje activo a la vez, por eso el break, empezando por el mas antiguo
+      } else {
+        console.log("El viaje de id " + i + "no coincidio con la del conductor " + this.conductor[0].id)
       }
-      
     }
   }
 
@@ -100,13 +120,18 @@ export class ConducirComponent implements OnInit {
 
   crearViaje(){
     let userID = this.conductor[0].id;
+    this.idViaje = this.conductor[0].id;
+    this.presentToast(userID + "");
     //El viaje empezara con 0 pasajeros a bordo y en el estado 0 de viaje
     this.servicioBD.addViaje(userID, 0 ,this.form.pasajero,this.form.tarifa,this.form.destino,this.form.patente,this.form.informacion, 0);
   }
 
-  formSubmit(){
+  
+
+  async formSubmit(){
     if (this.validadorForm(this.form)){
       this.crearViaje();
+      await this.cargarBdd();
       this.checkIDviaje();
       this.menuDepth = 1;
     }
