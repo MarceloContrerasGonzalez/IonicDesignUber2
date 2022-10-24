@@ -7,6 +7,10 @@ import { Viajes } from 'src/app/clases/viajes';
 import { ActiveUser } from 'src/app/clases/active-user';
 import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
 
+//Dialog angular material
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
+
 @Component({
   selector: 'app-buscar-viajes',
   templateUrl: './buscar-viajes.component.html',
@@ -22,37 +26,26 @@ export class BuscarViajesComponent implements OnInit {
   
   constructor(/* private api: ApiClientService */
     private servicioBD: DbserviceService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public dialog: MatDialog
   ){}
 
   ngOnInit() {
      //Cargar la base de datos con los viajes
     this.cargarBdd();
-
-    //por default
-    if (this.pasajero[0].viajeId != -1){
-      //transformar la id de la BD por la id del array
-      for (let i = 0; i < this.viajes.length; i++){
-        if (this.viajes[i].id == this.pasajero[0].viajeId){
-          this.idViaje = i;
-          this.menuDepth = 2;
-          break;
-        }
-      }
-    }
   }
 
   async ionViewWillEnter(){
+    this.menuDepth = 0;
     //Actualizar la base de datos
     this.cargarBdd();
 
-    console.log("ionViewWillEnter")
     //Verificar si el pasajero tiene un viaje reservado, y comprobar si ese viaje siga activo
     if (this.pasajero[0].viajeId != -1){
       let q = await this.verificarViaje(this.pasajero[0].viajeId);
 
       if (q <= 0){
-        this.presentToast("hay viaje, no existe");
+        this.callDialog("Este viaje ya no esta disponible");
         this.servicioBD.updateViajeUsuario(-1,this.pasajero[0].id); //el -1 le indica a la carga de la BD que el usuario ya no tiene reservacion en algun viaje
         this.menuDepth = 0;
       } 
@@ -65,11 +58,11 @@ export class BuscarViajesComponent implements OnInit {
           let q = await this.verificarViaje(this.viajes[this.idViaje].id);
 
           if (q <= 0){
-            this.presentToast("no existia viaje menu 1");
+            this.callDialog("Este viaje ya no esta disponible");
             this.menuDepth = 0;
           }
         } catch (error) {
-          this.presentToast("error del try");
+          this.callDialog("Este viaje ya no esta disponible");
           this.menuDepth = 0;
         }
         
@@ -88,6 +81,19 @@ export class BuscarViajesComponent implements OnInit {
         //usuario activo actual
         this.servicioBD.fetchUsuario().subscribe(user => {
           this.pasajero = user;
+
+            //por default
+            if (this.pasajero[0].viajeId != -1){
+              //transformar la id de la BD por la id del array
+              for (let i = 0; i < this.viajes.length; i++){
+                if (this.viajes[i].id == this.pasajero[0].viajeId){
+                  this.idViaje = i;
+                  this.menuDepth = 2;
+                  break;
+                }
+              }
+            }
+
         });
       }
     });
@@ -117,7 +123,7 @@ export class BuscarViajesComponent implements OnInit {
         if (this.verificarViaje(this.viajes[this.idViaje].id)){
           //luego verifica que el viaje no haya empezado y que queden asientos
             if ((this.viajes[this.idViaje].pasajeros >= this.viajes[this.idViaje].maxPasajeros) || (this.viajes[this.idViaje].estado != 0)){
-              this.presentToast("el viaje estaba lleno o empezo")
+              this.callDialog("Este viaje ya no esta disponible");
             } else {
               this.menuDepth = 1;
             }
@@ -139,7 +145,7 @@ export class BuscarViajesComponent implements OnInit {
         //luego verifica que el viaje no haya empezado y que queden asientos
         if ((this.viajes[this.idViaje].pasajeros >= this.viajes[this.idViaje].maxPasajeros) || (this.viajes[this.idViaje].estado != 0)){
             //si el viaje ya empezo o no quedan asientos disponibles
-            this.presentToast("al reservar estaba lleno o empezo")
+            this.callDialog("Este viaje ya no esta disponible");
             this.menuDepth = 0;
         } else {
             this.servicioBD.updatePasajerosViaje(this.viajes[this.idViaje].pasajeros+1,this.viajes[this.idViaje].id);
@@ -148,11 +154,11 @@ export class BuscarViajesComponent implements OnInit {
         }
       } else {
         //Si el viaje ya no existe (se cancelo), volver al menu
-        this.presentToast("el viaje se cancelo al reservar")
+        this.callDialog("Este viaje ya no esta disponible");
         this.menuDepth = 0;
       }
-    } catch (error) {
-      this.presentToast("error del try al reservar");
+    } catch(error){
+      this.callDialog("Este viaje ya no esta disponible");
       this.menuDepth = 0;
     }
   }
@@ -170,4 +176,11 @@ export class BuscarViajesComponent implements OnInit {
 		});
 		toast.present();
 	  };
+
+    callDialog(msg: string){
+      //Llamar al componente dialogo
+      this.dialog.open(DialogComponent, {
+        data: msg
+      });
+    }
 }

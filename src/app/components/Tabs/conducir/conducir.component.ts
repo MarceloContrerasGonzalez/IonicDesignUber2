@@ -88,7 +88,9 @@ export class ConducirComponent implements OnInit {
      //Recorrer la base de datos para detectar si eres conductor de un viaje
      for (let i = 0; i < this.viajes.length; i++){
       if (this.viajes[i].Userid == this.conductor[0].id){
-        this.presentToast(this.viajes[i].Userid + " / " + this.conductor[0].id)
+
+        //this.presentToast(this.viajes[i].Userid + " / " + this.conductor[0].id)
+
         this.idViaje = i;
         console.log("///////////////////////////////////")
         console.log("nuevo id viaje: " + this.idViaje)
@@ -108,6 +110,15 @@ export class ConducirComponent implements OnInit {
     }
   }
 
+  updateCheck(){
+     //Actualizar la id del viaje con el que creaste
+     for (let i = 0; i < this.viajes.length; i++){
+      if (this.viajes[i].Userid == this.conductor[0].id){
+        this.idViaje = i;
+      }
+     }
+  }
+
   eliminarViaje(){
     this.servicioBD.deleteViaje(this.viajes[this.idViaje].id);
     this.menuDepth = 0;
@@ -120,20 +131,23 @@ export class ConducirComponent implements OnInit {
 
   crearViaje(){
     let userID = this.conductor[0].id;
-    this.idViaje = this.conductor[0].id;
-    this.presentToast(userID + "");
+    //this.presentToast(userID + "");
     //El viaje empezara con 0 pasajeros a bordo y en el estado 0 de viaje
     this.servicioBD.addViaje(userID, 0 ,this.form.pasajero,this.form.tarifa,this.form.destino,this.form.patente,this.form.informacion, 0);
   }
 
   
 
-  async formSubmit(){
+  formSubmit(){
     if (this.validadorForm(this.form)){
       this.crearViaje();
-      await this.cargarBdd();
-      this.checkIDviaje();
-      this.menuDepth = 1;
+
+      //Actualizar los viajes
+      this.servicioBD.fetchViajes().subscribe(item => {
+        this.viajes = item;
+        this.updateCheck();
+        this.menuDepth = 1;
+      });
     }
     
   }

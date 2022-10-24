@@ -22,21 +22,25 @@ export class InicioComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.cargarBDusuarios();
+  }
 
-      //Cargar la base de datos
-      this.servicioBD.dbState().subscribe((res)=>{
-        if(res){
-          this.servicioBD.fetchUsuario().subscribe(item=>{
-            this.usuarios=item;
-          })
-        }
-      });
+  ionViewWillEnter(){
+    this.cargarBDusuarios();
+  }
 
+  cargarBDusuarios(){
+    //Cargar la base de datos
+    this.servicioBD.dbState().subscribe((res)=>{
+      if(res){
+        this.servicioBD.fetchUsuario().subscribe(item=>{
+          this.usuarios=item;
+        })
+      }
+    });
   }
 
   Cerrar(){
-    //console.log("boton")
-    //this.presentToast("Llamado");
     this.servicioBD.deleteAllUsuarios();
     localStorage.removeItem('ingresado')
     this.router.navigate(['/login']);

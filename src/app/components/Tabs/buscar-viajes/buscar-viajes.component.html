@@ -32,6 +32,9 @@
     <ion-button *ngIf="viajes[idViaje].estado == 1" id="cancelButton" color="danger" (click)="cancelarReserva()">Cancelar viaje</ion-button>
   </div>
   
+
+
+  
   <div *ngSwitchCase="1">
     <h1 class="Tittle_vehicle2">Informacion del vehiculo</h1>
     <div class="informationDiv">
@@ -57,16 +60,15 @@
       </div>
     </div>
 
-    
-    
 
     <div class="lookButtons">
       <ion-button class="button" color="medium" (click)="menuDepth = 0">Volver</ion-button>
     <ion-button class="button" color="secondary" (click)="reservarViaje()">Reservar</ion-button>
     </div>
-    
-
   </div>
+
+
+
 
   <div *ngSwitchDefault>
     <h1 class="Tittle_vehicle">Viajes disponibles</h1>
@@ -99,7 +101,7 @@
           </ion-col>
   
           <ion-col class="pas_col">
-            <h3>{{viaje.pasajeros}}/{{viaje.maxPasajeros}}-{{viaje.id}}</h3>
+            <h3>{{viaje.pasajeros}}/{{viaje.maxPasajeros}}</h3>
           </ion-col>
   
           <ion-col class="tar_col">

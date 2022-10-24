@@ -12,6 +12,9 @@
     <ion-button id="finishButton" color="success" (click)="eliminarViaje()">Terminar el viaje</ion-button>
   </div>
 
+
+
+
   <!-- Profundidad 1, creaste un viaje, pero esperas pasajeros -->
   <div *ngSwitchCase="1">
     <h1 class="waitingTittle">Esperando pasajeros</h1>
@@ -24,13 +27,14 @@
       <h3>{{viaje.pasajeros}}/{{viaje.maxPasajeros}}</h3>
     </ion-item> -->
 
-    <p style="text-align: center;">
-      <!-- //<div class="waitingButtons"> -->
-        <ion-button color="danger" (click)="eliminarViaje()">Cancelar el viaje</ion-button>
-        <ion-button color="success" (click)="empezarViaje()">Empezar el viaje</ion-button>
-      <!-- </div> -->
-    </p>
+      <div class="waitingButtons">
+        <ion-button class="buttonW" color="danger" (click)="eliminarViaje()">Cancelar viaje</ion-button>
+        <ion-button class="buttonW" color="success" (click)="empezarViaje()">Empezar viaje</ion-button>
+       </div> 
   </div>
+
+
+  
 
    <!-- Default, menu 0, crear un viaje -->
    <div *ngSwitchDefault>
