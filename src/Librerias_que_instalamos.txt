@@ -25,3 +25,5 @@ providers: [{}, SQLite]
 <Maps>
 npm install cordova-plugin-geolocation
 npm install @awesome-cordova-plugins/geolocation
+
+a
