@@ -3,29 +3,97 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <h1 class="Tittle_vehicle">Vehiculos disponibles</h1>
+<ion-content [ngSwitch]="menuDepth">
+
+  <div *ngSwitchCase="2">
+    
+    <h1 *ngIf="viajes[idViaje].estado == 0" class="Tittle_vehicle2">Vehiculo reservado</h1>
+    <h1 *ngIf="viajes[idViaje].estado == 1" class="Tittle_vehicle2">Viaje en progreso</h1>
+    <div class="informationDiv">
+
+      <div class="section_separation">
+        <h3>Destino:</h3><p>{{viajes[idViaje].destino}}</p>
+      </div>
+
+      <div class="section_separation">
+        <h3>Tarifa:</h3><p>${{viajes[idViaje].tarifa}}</p>
+      </div>
+
+      <div class="section_separation">
+        <h3>Patente del vehiculo:</h3><p>{{viajes[idViaje].patente}}</p>
+      </div>
+
+      <div class="section_separation" *ngIf=" viajes[idViaje].informacion != '' ">
+        <h3>informacion adicional:</h3><p>{{viajes[idViaje].informacion}}</p>
+      </div>
+    </div>
+
+    <ion-button *ngIf="viajes[idViaje].estado == 0" id="cancelButton" color="danger" (click)="cancelarReserva()">Cancelar reservacion</ion-button>
+    <ion-button *ngIf="viajes[idViaje].estado == 1" id="cancelButton" color="danger" (click)="cancelarReserva()">Cancelar viaje</ion-button>
+  </div>
+  
+
+
+  
+  <div *ngSwitchCase="1">
+    <h1 class="Tittle_vehicle2">Informacion del vehiculo</h1>
+    <div class="informationDiv">
+
+      <div class="section_separation">
+        <h3>Destino:</h3><p>{{viajes[idViaje].destino}}</p>
+      </div>
+
+      <div class="section_separation">
+        <h3>Tarifa:</h3><p>${{viajes[idViaje].tarifa}}</p>
+      </div>
+
+      <div class="section_separation">
+        <h3>Patente del vehiculo:</h3><p>{{viajes[idViaje].patente}}</p>
+      </div>
+
+      <div class="section_separation" *ngIf=" viajes[idViaje].informacion != '' ">
+        <h3>informacion adicional:</h3><p>{{viajes[idViaje].informacion}}</p>
+      </div>
+
+      <div class="section_separation">
+        <h3>Asientos disponibles:</h3><p>{{viajes[idViaje].pasajeros}}/{{viajes[idViaje].maxPasajeros}}</p>
+      </div>
+    </div>
+
+
+    <div class="lookButtons">
+      <ion-button class="button" color="medium" (click)="menuDepth = 0">Volver</ion-button>
+    <ion-button class="button" color="secondary" (click)="reservarViaje()">Reservar</ion-button>
+    </div>
+  </div>
+
+
+
+
+  <div *ngSwitchDefault>
+    <h1 class="Tittle_vehicle">Viajes disponibles</h1>
 
     <!-- Efecto de carga -->
-    <ion-item *ngIf="!viajes" class="ion-padding custom-skeleton">
+    <ion-item *ngIf="viajes.length == 0" class="ion-padding custom-skeleton">
       <ion-label>
         <ion-skeleton-text animated></ion-skeleton-text>
-        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
       </ion-label>
     </ion-item>  
 
     
-    <!-- Mostrar todos los viajes de la bdd0 -->
-    <ion-item *ngFor="let viaje of viajes">
-      <ion-card-content class="card_padding" (click)="showFor(viaje.id)">
+    <!-- Mostrar todos los viajes de la bdd que tengan espacios disponibles -->
+    <ion-item *ngFor="let viaje of viajes">      
+      <!-- *ngIf="viaje.pasajeros < viaje.maxPasajeros && viaje.estado == 0" -->
+      <ion-card-content  *ngIf="viaje.pasajeros < viaje.maxPasajeros && viaje.estado == 0" class="card_padding" (click)="elegirViaje(viaje.id)">
         <ion-row>
           <ion-col class="img_col">
             <img src="assets/icon/map_mark_icon.png" alt="Marcador">
           </ion-col>
   
           <ion-col class="ruta_col">
-            <h3>{{viaje.city}}</h3> 
-              <p>{{viaje.street}}</p>
+            <h3>{{viaje.destino}}</h3> 
+              <!-- <p>{{viaje.street}}</p> -->
           </ion-col>
   
           <ion-col class="img_col">
@@ -33,15 +101,18 @@
           </ion-col>
   
           <ion-col class="pas_col">
-            <h3>{{viaje.passengers}}/4</h3>
+            <h3>{{viaje.pasajeros}}/{{viaje.maxPasajeros}}</h3>
           </ion-col>
   
           <ion-col class="tar_col">
-            <h3>${{viaje.price}}</h3>
+            <h3>${{viaje.tarifa}}</h3>
           </ion-col>
         </ion-row>
       </ion-card-content>
     </ion-item>
+  </div>
+
+  
 
 
 

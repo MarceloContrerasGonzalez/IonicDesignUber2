@@ -6,18 +6,3 @@ npm install --save @teamhive/lottie-player
 <Angular material>
 npm install -g @angular/cli
 ng add @angular/material
-
-<http>
--importar HttpClientModule en app.module.ts
-import { HttpClientModule } from '@angular/common/http';
--importar HttpClientModule en imports:
-
-<storage / sqLite>
-1.- Instalar los elementos sqlite para capacitor
-npm install cordova-sqlite-storage 
-npm install @awesome-cordova-plugins/sqlite 
-
-2.- Agregar los plugin para que reconosca el proyecto en app.module.ts
-import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
--importar SQLite en providers
-providers: [{}, SQLite]
