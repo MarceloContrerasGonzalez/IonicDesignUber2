@@ -7,7 +7,8 @@
 <ion-content [fullscreen]="true">
   <div class="Home_tittle">
     <h1>¡Bienvenido</h1>
-    <h1 *ngFor="let u of usuarios">{{u.nombre}}! {{u.viajeId}}</h1>
+<!-- *ngIf="usuarios" -->
+    <h1  >{{usuario.nombre}}! | {{usuarioID}}</h1>
     <br>
     <img src="assets/img/user.png" alt="">
     <h2>Que deseas hacer?</h2>

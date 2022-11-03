@@ -26,4 +26,11 @@ providers: [{}, SQLite]
 npm install cordova-plugin-geolocation
 npm install @awesome-cordova-plugins/geolocation
 
-a
+<firebase>
+--instalar la libreria de firebase para angular, angularfire2
+npm install firebase @angular/fire --save
+
+npm install cordova-plugin-firebase 
+npm install @awesome-cordova-plugins/firebase 
+
+<loguearse con fire>

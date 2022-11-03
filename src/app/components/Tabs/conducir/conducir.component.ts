@@ -26,6 +26,7 @@ export class ConducirComponent implements OnInit {
   conductor: ActiveUser[];
   menuDepth: Number = 0;
   ubicacion: any;
+  usuarioID = parseInt(localStorage.getItem('usuarioActivo'));
 
   //validador
   field: String = "";
@@ -87,7 +88,7 @@ export class ConducirComponent implements OnInit {
   checkIDviaje(){
      //Recorrer la base de datos para detectar si eres conductor de un viaje
      for (let i = 0; i < this.viajes.length; i++){
-      if (this.viajes[i].Userid == this.conductor[0].id){
+      if (this.viajes[i].Userid == this.conductor[this.usuarioID].id){
 
         //this.presentToast(this.viajes[i].Userid + " / " + this.conductor[0].id)
 
@@ -105,7 +106,7 @@ export class ConducirComponent implements OnInit {
         }
         break;//solo deberias tener un viaje activo a la vez, por eso el break, empezando por el mas antiguo
       } else {
-        console.log("El viaje de id " + i + "no coincidio con la del conductor " + this.conductor[0].id)
+        console.log("El viaje de id " + i + "no coincidio con la del conductor " + this.conductor[this.usuarioID].id)
       }
     }
   }
@@ -113,7 +114,7 @@ export class ConducirComponent implements OnInit {
   updateCheck(){
      //Actualizar la id del viaje con el que creaste
      for (let i = 0; i < this.viajes.length; i++){
-      if (this.viajes[i].Userid == this.conductor[0].id){
+      if (this.viajes[i].Userid == this.conductor[this.usuarioID].id){
         this.idViaje = i;
       }
      }
@@ -130,7 +131,7 @@ export class ConducirComponent implements OnInit {
   }
 
   crearViaje(){
-    let userID = this.conductor[0].id;
+    let userID = this.conductor[this.usuarioID].id;
     //this.presentToast(userID + "");
     //El viaje empezara con 0 pasajeros a bordo y en el estado 0 de viaje
     this.servicioBD.addViaje(userID, 0 ,this.form.pasajero,this.form.tarifa,this.form.destino,this.form.patente,this.form.informacion, 0);

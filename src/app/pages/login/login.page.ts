@@ -2,6 +2,10 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import {  Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 
+
+//Clases
+//import { ActiveUser } from 'src/app/clases/active-user';
+
 //Dialog
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
@@ -10,13 +14,17 @@ import { ApiClientService } from 'src/app/services/Api/api-client.service';
 
 //importar BDD storage
 //import { StorageServiceService } from 'src/app/services/Storage/storage-service.service';
-import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
+//import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
 
 //Splash screen
 import { AnimationOptions } from 'ngx-lottie';
 
 //Animaciones
 import { AnimationController } from '@ionic/angular';
+
+//Firestore DB
+import { FirestoreService } from 'src/app/services/Firebase/FireStore DB/firestore.service';
+import { usuariosI } from 'src/app/models/models';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -25,9 +33,14 @@ import { AnimationController } from '@ionic/angular';
 
 export class LoginPage implements OnInit {
 	@ViewChild('appLogo',{read: ElementRef, static:true}) logo: ElementRef;
+	userCollectionLenght = -1;
 
 	//Api conexion github
 	alumnos:any;
+
+	//usuarios de firebase
+	usuarios: any[]=[]; //deberia ser el formato de la interfaz, pero debido a que tambien tomo su id para guardarlo en localstorage, no es posible
+
 
 	//Blur pero con variables por que no se como integrar blur aun
 	bolShowUserError: boolean = false;
@@ -51,30 +64,50 @@ export class LoginPage implements OnInit {
 		public toastController: ToastController,
 		private animationCtrl: AnimationController,
 		private api: ApiClientService,
-		private dbservice: DbserviceService,
-		public dialog: MatDialog
+		//private dbservice: DbserviceService,
+		public dialog: MatDialog,
+		private firestore: FirestoreService
 	) {}
 	
 	ionViewWillEnter(){
-		//rescartar a los usuarios de la api para manejarlos y validarlos al iniciar sesion
-		this.getUsuarios();
+		
+		//rescartar a los usuarios del sqlite
+		/*this.dbservice.dbState().subscribe((res)=>{
+			if(res){
+			  this.dbservice.fetchUsuario().subscribe(user => {
+				this.usuarios = user;
+			  });
+			}
+		  });*/
+
+		//this.getEstudiantes();
+		
 	}
 
-	getUsuarios(){
+	async getUsuariosApi(){
 		this.api.getUsuarios().subscribe((data)=>{
 		  let jsonData =  Object.values(data) //recojer los datos del objeto del api y transformalos
 		  let alumSchema = Object.values(jsonData[0]) //Tomar los datos del primer objeto, buscar dentro del esquema de id 0 (alumnos) y pasarlo a la variable 2 como objeto
 
 		  this.alumnos = alumSchema;//le pasamos la variable 
+
+
+		  //Hacer un bucle for con todos los alumnos recogidos y pasarlos a firebase
+		  for (let i = 0; i < this.alumnos.length; i++){
+				console.log("Bucle for")
+				//this.dbservice.addUsuario(this.alumnos[i].id, this.alumnos[i].nombre, this.alumnos[i].username, this.alumnos[i].password);
+				//this.firestore.createDoc()
+				this.crearUsuarios(this.alumnos[i].nombre,this.alumnos[i].username,this.alumnos[i].password,(i+1).toString())
+		  }
 		});
 	};
 
 	//Crea al usuario y lo guarda en la base de datos
-	guardarBDD(id, name, user, pass) {
+	/*guardarBDD(id, name, user, pass) {
 		this.dbservice.addUsuario(id, name,user,pass);
 		//this.dbservice.presentToast("Usuario guardado");
 	}
-
+	*/
 
 	 //Validar que los campos no esten vacios
 	 validador(model: any){
@@ -89,21 +122,23 @@ export class LoginPage implements OnInit {
 
 	 
 	InSesion(){
+		
 		let bolError = false;
-		/* validacion */
+		// validacion 
 		if (this.validador(this.user)){
 
-			 for (let i = 1; i < this.alumnos.length; i++){
-				if ((this.user.usuario == this.alumnos[i].username) && (this.user.password == this.alumnos[i].password))
+			 for (let i = 0; i < this.usuarios.length; i++){
+				if ((this.user.usuario == this.usuarios[i].username) && (this.user.password == this.usuarios[i].password))
 				{
 					console.log("VALIDADO EL USUARIO");
-					this.guardarBDD(this.alumnos[i].id, this.alumnos[i].nombre,this.user.usuario,this.user.password);
+					//this.guardarBDD(this.alumnos[i].id, this.alumnos[i].nombre,this.user.usuario,this.user.password);
+					localStorage.setItem('usuarioActivo',this.usuarios[i].id)
 					localStorage.setItem('ingresado','true')
 					this.router.navigate(['/home'])
 					break;
 				} 
 
-				if (i >= this.alumnos.length-1){
+				if (i >= this.usuarios.length-1){
 					bolError = true;
 				}
 			}
@@ -116,21 +151,22 @@ export class LoginPage implements OnInit {
 			this.bolShowUserError = true;
 			this.bolShowPasswordError =true;
 		}
+		
 	};
 
 	dataUserError(msg){
 		const dialogRef = this.dialog.open(DialogComponent, {
 			data: msg
 		  });
-		//console.log("Username o password incorrecta");
-
-		//this.presentToast("algo malo")
 	}
-	 
+
 	  ngOnInit() {
+		//verificar si la base de datos esta vacia para pasarle los datos de la api GITHUB
+		this.cargarUsuarios();
+
 		setTimeout(() => {
 			this.bolShowSplash = false;
-
+			
 
 			//Animacion del logo solo despues del splash screen (girara 360 grado)
 			const logoanimation = this.animationCtrl.create()
@@ -143,6 +179,48 @@ export class LoginPage implements OnInit {
 			  logoanimation.play();//iniciar la animacion del logo
 
 		  }, 2000);  //2s
+	  };
+
+	  crearUsuarios(name: string, username:string, password:string, id:string){
+		const usuarios: usuariosI ={
+			nombre: name,
+			username: username,
+			password: password,
+			viajeID: 'null'
+		}
+		this.firestore.createDoc(usuarios,'Usuarios',id)
+	  };
+
+	  actualizarUsuario(){
+		const update ={
+			nombre: 'update2',
+			username: 'update@duoc3'
+		}
+		this.firestore.updateDoc(update,'Usuarios','1');
+	  }
+
+	  getUsuarios(){
+		this.firestore.getCollections('Usuarios').subscribe( res => {
+			console.log("contenido: ",res)
+		});
+	  };
+
+	  async cargarUsuarios(){
+		this.firestore.getCollections<usuariosI>('Usuarios').subscribe(res=>{
+			console.log('largo script: ', res.length );
+
+			//Si el largo de la coleccion es 0 (osea, que no hay datos en firebase), cargarlos desde la api
+			if (res.length == 0){
+				this.getUsuariosApi();
+			} else {
+				//Cargarlos directamente en la memoria local
+				//console.log("res",res)
+				this.usuarios = res;
+				console.log("usuarios",this.usuarios)
+			}
+			//return res.length;
+		});
+		
 		
 	  };
 
