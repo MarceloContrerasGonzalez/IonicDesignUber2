@@ -27,7 +27,7 @@ import { DialogComponent } from 'src/app/components/shared/dialog/dialog.compone
 export class ConducirComponent implements OnInit {
   //viajes: Viajes[];
   //Viajes firebases
-  viajes: any[]=[];
+  viajes: any[] = [];
 
   idViaje;//si le pongo any me da error, si le pongo number no puedo hacerle un index en el scrip delete, mejor no ponerle nada
   //conductor: ActiveUser[];
@@ -37,16 +37,16 @@ export class ConducirComponent implements OnInit {
 
   //validador
   field: String = "";
-  
+
 
   //tripForm: FormGroup;
-  form={
-		pasajero: 0,//Cantidad de pasajeros maximos
-		tarifa: 0,
+  form = {
+    pasajero: 0,//Cantidad de pasajeros maximos
+    tarifa: 0,
     destino: "",
     patente: "",
     informacion: ""
-	}
+  }
 
   constructor(
     public toastController: ToastController,
@@ -56,18 +56,19 @@ export class ConducirComponent implements OnInit {
     public dialog: MatDialog
   ) { }
 
-  
+
 
   ngOnInit() {
     this.idViaje = 0;
     //Cargar la base de datos
     ////this.cargarBdd();
-   // this.checkIDviaje();
+    this.cargarViajes();
+    // this.checkIDviaje();
     localStorage.removeItem('preferenciaViaje')
-    localStorage.setItem('preferenciaAuto','true')
+    localStorage.setItem('preferenciaAuto', 'true')
   }
 
-  /* ionViewWillEnter(){
+  ionViewWillEnter() {
     this.menuDepth = 0;
     this.idViaje = 0;
     //Actualizar la base de datos
@@ -75,18 +76,18 @@ export class ConducirComponent implements OnInit {
     //this.checkIDviaje();
   }
 
-  cargarViajes(){
-    this.firestore.getCollections<ViajesI>('Viajes').subscribe(res=>{
+  cargarViajes() {
+    this.firestore.getCollections<ViajesI>('Viajes').subscribe(res => {
       this.viajes = res;
-      console.log("viajes cargados",res)
+      console.log("viajes cargados", res)
 
       //Verificar si eres dueño de algun viaje
-      if (this.idViaje == 0){
-        for (let i = 0; i < this.viajes.length; i++){
-          if (this.viajes[i].Userid == this.usuarioID){
+      if (this.idViaje == 0) {
+        for (let i = 0; i < this.viajes.length; i++) {
+          if (this.viajes[i].Userid == this.usuarioID) {
             this.idViaje = i;
             //si encuentra que eres dueño de un viaje, verificar su estado , dependiendo de eso se cambiara el ngSwitch
-            if(this.viajes[i].estado == 0){
+            if (this.viajes[i].estado == 0) {
               //si estas esperando pasajeros
               this.menuDepth = 1;
             } else {
@@ -100,19 +101,19 @@ export class ConducirComponent implements OnInit {
     });
   };
 
-  eliminarViaje(){
-  this.firestore.deleteDoc('Viajes',this.viajes[this.idViaje].id)
+  eliminarViaje() {
+    this.firestore.deleteDoc('Viajes', this.viajes[this.idViaje].id)
     this.menuDepth = 0;
   }
 
-  empezarViaje(){
-   // this.servicioBD.updateEstadoViaje(1,this.viajes[this.idViaje].id);//el 1 es el estado de que el viaje ya empezo, evitara que mas clientes reserven
-    this.firestore.updateDoc({estado: 1},'Viajes',this.viajes[this.idViaje].id);
+  empezarViaje() {
+    // this.servicioBD.updateEstadoViaje(1,this.viajes[this.idViaje].id);//el 1 es el estado de que el viaje ya empezo, evitara que mas clientes reserven
+    this.firestore.updateDoc({ estado: 1 }, 'Viajes', this.viajes[this.idViaje].id);
     this.menuDepth = 2;
   }
 
-  crearViaje(){
-    const data: ViajesI={
+  crearViaje() {
+    const data: ViajesI = {
       Userid: this.usuarioID,
       pasajeros: 0,
       maxPasajeros: this.form.pasajero,
@@ -122,79 +123,79 @@ export class ConducirComponent implements OnInit {
       informacion: this.form.informacion,
       estado: 0
     }
-    this.firestore.createRandomDoc(data,'Viajes');
+    this.firestore.createRandomDoc(data, 'Viajes');
   }
 
-  
 
-  formSubmit(){
-    if (this.validadorForm(this.form)){
+
+  formSubmit() {
+    if (this.validadorForm(this.form)) {
       this.crearViaje();
       this.cargarViajes();
       this.menuDepth = 1;
     }
-    
+
   }
 
-  validadorForm(model: any){
-		for (var [key, value] of Object.entries(model)) {
-      switch(key){
-        case 'pasajero':{
-          if ((value <= 0) || (value > 6)){
+  validadorForm(model: any) {
+    for (var [key, value] of Object.entries(model)) {
+      switch (key) {
+        case 'pasajero': {
+          if ((value <= 0) || (value > 6)) {
             this.callDialog("La cantidad de pasajeros debe ser mayor a 0 y menor a 6");
             return false;
           }
         }
 
-        case 'tarifa':{
-          if (value <= 0){
+        case 'tarifa': {
+          if (value <= 0) {
             this.callDialog("La tarifa debe ser un numero en positivo");
             return false;
           }
         }
 
-        default:{
-          if ((key != 'informacion') && (value == "")){
+        default: {
+          if ((key != 'informacion') && (value == "")) {
             this.callDialog("La casilla de " + key + " no debe estar vacia");
             return false;
           }
         }
-       
-      }
-		}
-		return true;
-	 }; 
 
-  async addDirection(){
+      }
+    }
+    return true;
+  };
+
+  async addDirection() {
     const modalAdd = await this.modalController.create({
       component: MapsComponent,
       mode: 'ios',
       swipeToClose: false
     });
-    await modalAdd.present(); 
+    await modalAdd.present();
 
-    const {data} = await modalAdd.onWillDismiss();
-    if (data){
-       this.form.destino = data.pos;
+    const { data } = await modalAdd.onWillDismiss();
+    if (data) {
+      this.form.destino = data.pos;
     }
   }
 
-  async presentToast(msg:string) {
-		const toast = await this.toastController.create({
-		  message: msg,
-		  duration: 3500
-		});
-		toast.present();
-	  };
+  async presentToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 3500
+    });
+    toast.present();
+  };
 
-    callDialog(msg: string){
-      //Llamar al componente dialogo
-      this.dialog.open(DialogComponent, {
-        data: msg
-      });
-    } */
+  callDialog(msg: string) {
+    //Llamar al componente dialogo
+    this.dialog.open(DialogComponent, {
+      data: msg
+    });
+  }
 
 
-    
-  
+
+
 }
