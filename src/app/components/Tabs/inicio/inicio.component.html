@@ -1,0 +1,17 @@
+<!-- header -->
+<ion-header>
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="Home_tittle">
+    <h1>¡Bienvenido</h1>
+<!-- *ngIf="usuarios" -->
+    <h1  >{{usuario.nombre}}! | {{usuarioID}}</h1>
+    <br>
+    <img src="assets/img/user.png" alt="">
+    <h2>Que deseas hacer?</h2>
+    <ion-button expand="block"  class="session_button" (click)="Cerrar()">cerrar sesion</ion-button>
+  </div>
+</ion-content>

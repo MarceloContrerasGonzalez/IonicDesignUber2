@@ -1,40 +1,57 @@
 
-<ion-header>
+<!-- Splash screen -->
+<div class="splash-screen" *ngIf="bolShowSplash">
+  <img src="assets/icon/TeLLevoIconSplash.png" alt="splashLogo" id="imgSplash">
+  <ng-lottie [options]='options'></ng-lottie>
+</div>
+
+<!-- header -->
+ <ion-header>
   <ion-toolbar>
-    <ion-title>Te llevo app</ion-title>
+    <img src="assets/icon/duocicon.png" alt="DuocIcon" id="duocIcon">
   </ion-toolbar>
 </ion-header>
 
-
+<!-- resto de la pagina -->
 <ion-content fullscreen>
-  <img src="assets/icon/duocicon.png" alt="DuocIcon" id="duocIcon">
+  <!-- Logo de la aplicacion + fondo decorativo -->
+  <div>
+    <img  src="assets/icon/favicon.png" alt="AppLogo" id="appLogo" #appLogo>
+    <img src="assets/img/FondoDuoc.png" alt="fondoDuoc" id="duocBackground">
+  </div>
   
-  <ion-card style="">
+  <ion-card >
     <ion-card-header>
-      <ion-card-title>Iniciar Sesion</ion-card-title>
+      <ion-card-title class="ion-text-center">Iniciar sesion</ion-card-title>
     </ion-card-header>
 
     <br>
     <ion-item>
       <ion-label><ion-icon name="person-circle-outline"></ion-icon></ion-label>
-      <ion-input placeholder="Usuario" type="text" [(ngModel)]="user.usuario" minLength="3" maxLength="8" required> </ion-input>
-      <span slot="error" >Ingrese Un Usuario Valido</span>
+      <ion-input placeholder="Usuario" type="text" [(ngModel)]="user.usuario" minLength="4" (click)="this.bolShowUserError = true" required> </ion-input>
+      <span slot="error" *ngIf="bolShowUserError">Ingrese Un Usuario Valido</span>
     </ion-item>
       
     <ion-item>
       <ion-label><ion-icon name="lock-closed-outline"></ion-icon></ion-label>
-      <ion-input placeholder="Contraseña" type="password" required [(ngModel)]="user.password">  </ion-input>
-      <span slot="error" >Contraseña Invalida</span>
+
+
+      <ion-input placeholder="Contraseña" type="password" required [(ngModel)]="user.password" (click)="this.bolShowPasswordError = true" required>  </ion-input>
+      <span slot="error" *ngIf="bolShowPasswordError">Contraseña Invalida</span>
     </ion-item>
 
-    
+    <!-- Boton para el login -->
     <br>
-    <ion-button id="loginButton" class="button_margin" expand="block" (click)="InSesion()" >Ingresar</ion-button>
-    <p style="text-align: center;"><a [routerLink]="['/recovpass']">¿Olvidaste tu contraseña?</a></p>
+    <ion-button  id="loginButton" class="button_margin" expand="block" (click)="InSesion()" >Ingresar</ion-button>
+    <p style="text-align: center; margin-top: 30px; margin-bottom: 0px;"><a [routerLink]="['/recovpass']">¿Olvidaste tu contraseña?</a></p>
+    <br>
+    <p style="text-align: center; margin-top: 30px; margin-bottom: 0px;"><a [routerLink]="['/nada']">En Construccion</a></p>
     <br>
   </ion-card>
  
-
+  
 </ion-content>
+
+
 
 

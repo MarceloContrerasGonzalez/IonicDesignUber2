@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+//Firebase
+import { FirestoreService } from 'src/app/services/Firebase/FireStore DB/firestore.service';
+import { usuariosI } from 'src/app/models/models';
 
 
 @Component({
@@ -9,24 +11,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class HomePage {
-  user:any;
+  usuarioID = localStorage.getItem('usuarioActivo');
 
-  constructor(
-   
-    private activeroute: ActivatedRoute, 
-    private router: Router) 
+  constructor(private firestore: FirestoreService) {}
 
-    {
-    this.activeroute.queryParams.subscribe(params => {
-      if (this.router.getCurrentNavigation().extras.state) {
-        this.user = this.router.getCurrentNavigation().extras.state.user;
-        console.log(this.user)
-      }
-    });
+  async ngOnInit() {
+    this.usuarioID = localStorage.getItem('usuarioActivo');
+    await this.cargarUsuario();
   }
 
-  
-    ngOnInit() {
-    }
+  async cargarUsuario(){
+    await this.firestore.getDocument<usuariosI>('Usuarios',this.usuarioID).subscribe(res=>{
+      //this.usuario = res;
+      console.log("usuario cargado en home page",res)
+    });
+  }
   
 }
