@@ -53,11 +53,13 @@ export class ConducirComponent implements OnInit {
   ngOnInit() {
     this.idViaje = 0;
     //Cargar la base de datos
-    this.cargarBdd();
-    this.checkIDviaje();
+    //this.cargarBdd();
+    //this.checkIDviaje();
+    localStorage.removeItem('preferenciaViaje')
+    localStorage.setItem('preferenciaAuto','true')
   }
 
-  ionViewWillEnter(){
+  /* ionViewWillEnter(){
     this.menuDepth = 0;
     this.idViaje = 0;
 
@@ -67,9 +69,9 @@ export class ConducirComponent implements OnInit {
     //Actualizar la base de datos
     this.cargarBdd();
     this.checkIDviaje();
-  }
+  } */
 
-  cargarBdd(){
+/*   cargarBdd(){
     this.servicioBD.dbState().subscribe((res) => {
       if (res) {
         //viajes activos
@@ -209,7 +211,7 @@ export class ConducirComponent implements OnInit {
       this.dialog.open(DialogComponent, {
         data: msg
       });
-    }
+    } */
 
 
     

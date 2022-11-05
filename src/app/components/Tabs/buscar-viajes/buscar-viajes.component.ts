@@ -34,6 +34,8 @@ export class BuscarViajesComponent implements OnInit {
   ngOnInit() {
      //Cargar la base de datos con los viajes
     this.cargarBdd();
+    localStorage.removeItem('preferenciaAuto')
+    localStorage.setItem('preferenciaViaje','true')  
   }
 
   async ionViewWillEnter(){

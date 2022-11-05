@@ -34,6 +34,8 @@ export class InicioComponent implements OnInit {
   ngOnInit() {
     this.usuarioID = localStorage.getItem('usuarioActivo');
     this.cargarUsuario();
+    localStorage.removeItem('preferenciaAuto')
+    localStorage.removeItem('preferenciaViaje')
   }
 
   ionViewWillEnter(){
