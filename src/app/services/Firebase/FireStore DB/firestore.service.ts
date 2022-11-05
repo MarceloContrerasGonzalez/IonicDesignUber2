@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection  } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -18,9 +19,20 @@ export class FirestoreService {
     //this.firestore.collection('Usuarios')
   }
 
+  createRandomDoc(data: any, path: string){
+    const collection = this.firestore.collection(path);
+    return collection.doc().set(data);
+    //this.firestore.collection('Usuarios')
+  }
+
   updateDoc(data: any, path: string, id:string){
     const collection = this.firestore.collection(path);
     return collection.doc(id).update(data);
+  }
+
+  deleteDoc(path: string, id:string){
+    const collection = this.firestore.collection(path);
+    return collection.doc(id).delete();
   }
 
   //Rescatar el contenido de una coleccion
@@ -45,5 +57,52 @@ export class FirestoreService {
     const document = this.firestore.collection<tipo>(path).doc(id);
     return document.valueChanges();
   };
+
+  async checkDocumentExists(path: string, id: string){
+    const documentRef = this.firestore.collection(path).doc(id);
+    
+    if ((await documentRef.ref.get()).exists){
+      console.log("el documento existia");
+      return true;
+    } else {
+      console.log("el documento no existia");
+      return false;
+    }
+    /*
+    return document.get().subscribe(res =>{
+        let returned = false;
+        if (res.exists){
+          console.log("el documento existia");
+          returned = true;
+        } else {
+          console.log("el documento no existia");
+          returned = false;
+        }
+
+        return returned;
+    })
+    */
+  }
+
+  /*
+  checkDocumentField(path: string, doc:string, field: string){
+      const document = this.firestore.collection(path).doc(doc)
+
+      document.get.then((res){
+
+      });
+
+      await _users.doc(id).get().then((doc){
+        if(doc.exists){
+          doc.data().forEach((key, value) { 
+            if(key == 'field'){
+              var valueOfField = value;
+            }
+          });
+        }
+     });
+
+  }
+  */
 
 }

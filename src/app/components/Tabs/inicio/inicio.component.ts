@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { ToastController, NavController } from '@ionic/angular';
 
 //importar BD SQlite
 //import { ActiveUser } from 'src/app/clases/active-user';
 //import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
 
 
-//Firebase
+ //Firebase
 import { FirestoreService } from 'src/app/services/Firebase/FireStore DB/firestore.service';
 import { usuariosI } from 'src/app/models/models';
 
@@ -28,18 +28,25 @@ export class InicioComponent implements OnInit {
     //private servicioBD: DbserviceService,
     private firestore: FirestoreService,
     public toastController: ToastController,
-    private router: Router
+    //private router: Router,
+    public navControl: NavController
   ) {}
 
   ngOnInit() {
     this.usuarioID = localStorage.getItem('usuarioActivo');
+    console.log("id usuario cargado ng",this.usuarioID)
     this.cargarUsuario();
   }
 
   ionViewWillEnter(){
     this.usuarioID = localStorage.getItem('usuarioActivo');
+    console.log("id usuario cargado will",this.usuarioID)
     this.cargarUsuario();
     
+  }
+
+  ionViewDidEnter(){
+    console.log("awuebo did")
   }
 
   cargarUsuario(){
@@ -62,7 +69,9 @@ export class InicioComponent implements OnInit {
     //this.servicioBD.deleteAllUsuarios();
     localStorage.removeItem('ingresado')
     localStorage.removeItem('usuarioActivo')
-    this.router.navigate(['/login']);
+   //this.router.navigate(['/login']);
+    this.navControl.navigateRoot(['/login']);
+    //this.router.navigate(["login"], { replaceUrl: true });
   };  
 
 
