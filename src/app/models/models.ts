@@ -7,7 +7,7 @@ export interface usuariosI{
 
 export interface ViajesI{
     //id: number;
-    Userid: number;
+    Userid: string;
     pasajeros: number;
     maxPasajeros: number;
     tarifa: number;

@@ -7,9 +7,13 @@ import { ModalController } from '@ionic/angular';
 import { MapsComponent } from '../../maps/maps.component';
 
 //importar BD SQlite
-import { ActiveUser } from 'src/app/clases/active-user';
-import { Viajes } from 'src/app/clases/viajes';
-import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
+//import { ActiveUser } from 'src/app/clases/active-user';
+//import { Viajes } from 'src/app/clases/viajes';
+//import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
+
+//Firebase
+import { FirestoreService } from 'src/app/services/Firebase/FireStore DB/firestore.service';
+import { ViajesI } from 'src/app/models/models';
 
 //Dialog angular material
 import { MatDialog } from '@angular/material/dialog';
@@ -21,12 +25,15 @@ import { DialogComponent } from 'src/app/components/shared/dialog/dialog.compone
   styleUrls: ['./conducir.component.scss'],
 })
 export class ConducirComponent implements OnInit {
-  viajes: Viajes[];
+  //viajes: Viajes[];
+  //Viajes firebases
+  viajes: any[]=[];
+
   idViaje;//si le pongo any me da error, si le pongo number no puedo hacerle un index en el scrip delete, mejor no ponerle nada
-  conductor: ActiveUser[];
+  //conductor: ActiveUser[];
   menuDepth: Number = 0;
   ubicacion: any;
-  usuarioID = parseInt(localStorage.getItem('usuarioActivo'));
+  usuarioID = localStorage.getItem('usuarioActivo');
 
   //validador
   field: String = "";
@@ -43,7 +50,8 @@ export class ConducirComponent implements OnInit {
 
   constructor(
     public toastController: ToastController,
-    private servicioBD: DbserviceService,
+    //private servicioBD: DbserviceService,
+    private firestore: FirestoreService,
     private modalController: ModalController,
     public dialog: MatDialog
   ) { }
@@ -53,8 +61,8 @@ export class ConducirComponent implements OnInit {
   ngOnInit() {
     this.idViaje = 0;
     //Cargar la base de datos
-    //this.cargarBdd();
-    //this.checkIDviaje();
+    ////this.cargarBdd();
+   // this.checkIDviaje();
     localStorage.removeItem('preferenciaViaje')
     localStorage.setItem('preferenciaAuto','true')
   }
@@ -62,81 +70,59 @@ export class ConducirComponent implements OnInit {
   /* ionViewWillEnter(){
     this.menuDepth = 0;
     this.idViaje = 0;
-
-    console.log("//////////////////////////////////////////////")
-    console.log("ionwillenter: idviaje" + this.idViaje)
-
     //Actualizar la base de datos
-    this.cargarBdd();
-    this.checkIDviaje();
-  } */
-
-/*   cargarBdd(){
-    this.servicioBD.dbState().subscribe((res) => {
-      if (res) {
-        //viajes activos
-        this.servicioBD.fetchViajes().subscribe(item => {
-          this.viajes = item;
-        });
-
-        //usuario activo actual
-        this.servicioBD.fetchUsuario().subscribe(user => {
-          this.conductor = user;
-        });
-      }
-    });
+    this.cargarViajes();
+    //this.checkIDviaje();
   }
 
-  checkIDviaje(){
-     //Recorrer la base de datos para detectar si eres conductor de un viaje
-     for (let i = 0; i < this.viajes.length; i++){
-      if (this.viajes[i].Userid == this.conductor[this.usuarioID].id){
+  cargarViajes(){
+    this.firestore.getCollections<ViajesI>('Viajes').subscribe(res=>{
+      this.viajes = res;
+      console.log("viajes cargados",res)
 
-        //this.presentToast(this.viajes[i].Userid + " / " + this.conductor[0].id)
-
-        this.idViaje = i;
-        console.log("///////////////////////////////////")
-        console.log("nuevo id viaje: " + this.idViaje)
-
-        //si encuentra que eres dueño de un viaje, verificar su estado , dependiendo de eso se cambiara el ngSwitch
-        if(this.viajes[i].estado == 0){
-            //si estas esperando pasajeros
-            this.menuDepth = 1;
-        } else {
-          //si tienes el viaje activo
-          this.menuDepth = 2;
+      //Verificar si eres dueño de algun viaje
+      if (this.idViaje == 0){
+        for (let i = 0; i < this.viajes.length; i++){
+          if (this.viajes[i].Userid == this.usuarioID){
+            this.idViaje = i;
+            //si encuentra que eres dueño de un viaje, verificar su estado , dependiendo de eso se cambiara el ngSwitch
+            if(this.viajes[i].estado == 0){
+              //si estas esperando pasajeros
+              this.menuDepth = 1;
+            } else {
+              //si tienes el viaje activo
+              this.menuDepth = 2;
+            }
+          }
         }
-        break;//solo deberias tener un viaje activo a la vez, por eso el break, empezando por el mas antiguo
-      } else {
-        console.log("El viaje de id " + i + "no coincidio con la del conductor " + this.conductor[this.usuarioID].id)
       }
-    }
-  }
 
-  updateCheck(){
-     //Actualizar la id del viaje con el que creaste
-     for (let i = 0; i < this.viajes.length; i++){
-      if (this.viajes[i].Userid == this.conductor[this.usuarioID].id){
-        this.idViaje = i;
-      }
-     }
-  }
+    });
+  };
 
   eliminarViaje(){
-    this.servicioBD.deleteViaje(this.viajes[this.idViaje].id);
+  this.firestore.deleteDoc('Viajes',this.viajes[this.idViaje].id)
     this.menuDepth = 0;
   }
 
   empezarViaje(){
-    this.servicioBD.updateEstadoViaje(1,this.viajes[this.idViaje].id);//el 1 es el estado de que el viaje ya empezo, evitara que mas clientes reserven
+   // this.servicioBD.updateEstadoViaje(1,this.viajes[this.idViaje].id);//el 1 es el estado de que el viaje ya empezo, evitara que mas clientes reserven
+    this.firestore.updateDoc({estado: 1},'Viajes',this.viajes[this.idViaje].id);
     this.menuDepth = 2;
   }
 
   crearViaje(){
-    let userID = this.conductor[this.usuarioID].id;
-    //this.presentToast(userID + "");
-    //El viaje empezara con 0 pasajeros a bordo y en el estado 0 de viaje
-    this.servicioBD.addViaje(userID, 0 ,this.form.pasajero,this.form.tarifa,this.form.destino,this.form.patente,this.form.informacion, 0);
+    const data: ViajesI={
+      Userid: this.usuarioID,
+      pasajeros: 0,
+      maxPasajeros: this.form.pasajero,
+      tarifa: this.form.tarifa,
+      destino: this.form.destino,
+      patente: this.form.patente,
+      informacion: this.form.informacion,
+      estado: 0
+    }
+    this.firestore.createRandomDoc(data,'Viajes');
   }
 
   
@@ -144,13 +130,8 @@ export class ConducirComponent implements OnInit {
   formSubmit(){
     if (this.validadorForm(this.form)){
       this.crearViaje();
-
-      //Actualizar los viajes
-      this.servicioBD.fetchViajes().subscribe(item => {
-        this.viajes = item;
-        this.updateCheck();
-        this.menuDepth = 1;
-      });
+      this.cargarViajes();
+      this.menuDepth = 1;
     }
     
   }

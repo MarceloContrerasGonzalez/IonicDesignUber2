@@ -11,27 +11,33 @@ import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
 
+//Firebase
+import { FirestoreService } from 'src/app/services/Firebase/FireStore DB/firestore.service';
+import { usuariosI, ViajesI } from 'src/app/models/models';
+
 @Component({
   selector: 'app-buscar-viajes',
   templateUrl: './buscar-viajes.component.html',
   styleUrls: ['./buscar-viajes.component.scss'],
 })
 export class BuscarViajesComponent implements OnInit {
-  viajes: Viajes[];
-  pasajero: ActiveUser[];
+  //viajes: Viajes[];
+  viajes: any[]=[];
+  usuario: usuariosI;
+ 
   idViaje;//id del viaje dentro del array de datos locales
   menuDepth: Number = 0;
-  usuarioID = parseInt(localStorage.getItem('usuarioActivo'));
+  usuarioID = localStorage.getItem('usuarioActivo');
   
   
   
-  constructor(/* private api: ApiClientService */
-    private servicioBD: DbserviceService,
+  constructor(
     public toastController: ToastController,
+    private firestore: FirestoreService,
     public dialog: MatDialog
   ){}
 
-  ngOnInit() {
+  async ngOnInit() {
      //Cargar la base de datos con los viajes
     this.cargarBdd();
     localStorage.removeItem('preferenciaAuto')
@@ -39,136 +45,125 @@ export class BuscarViajesComponent implements OnInit {
   }
 
   async ionViewWillEnter(){
-    this.menuDepth = 0;
     //Actualizar la base de datos
     this.cargarBdd();
-
-    //Verificar si el pasajero tiene un viaje reservado, y comprobar si ese viaje siga activo
-    if (this.pasajero[this.usuarioID].viajeId != -1){
-      let q = await this.verificarViaje(this.pasajero[this.usuarioID].viajeId);
-
-      if (q <= 0){
-        this.callDialog("Este viaje ya no esta disponible");
-        this.servicioBD.updateViajeUsuario(-1,this.pasajero[this.usuarioID].id); //el -1 le indica a la carga de la BD que el usuario ya no tiene reservacion en algun viaje
-        this.menuDepth = 0;
-      } 
-    } else {
-      //si no tenias un vehiculo reservado, verificar que no estuvieras en el menu (el menu justo antes de clickear un viaje)
-      if (this.menuDepth == 1){
-
-        //El try es en caso de que la base de datos ya no se quede con viajes y por ende, el array quede vacio
-        try{
-          let q = await this.verificarViaje(this.viajes[this.idViaje].id);
-
-          if (q <= 0){
-            this.callDialog("Este viaje ya no esta disponible");
-            this.menuDepth = 0;
-          }
-        } catch (error) {
-          this.callDialog("Este viaje ya no esta disponible");
-          this.menuDepth = 0;
-        }
-        
-      }
-    }
+    this.verificarViajeUsuario();
   }
 
-  cargarBdd(){
-    this.servicioBD.dbState().subscribe((res)=>{
-      if(res){
-        //viajes
-        this.servicioBD.fetchViajes().subscribe(item=>{
-          this.viajes=item;
-        })
+  cargarViajes(){
+    this.firestore.getCollections<ViajesI>('Viajes').subscribe(res=>{
+      this.viajes = res;
+      console.log("viajes cargados",res)
+      
+      //Si ya hay un usuario cargado, verificar si ese usuario tenia un viaje reservado para tomar la id del array
+      if (this.usuario){
+        for (let i = 0; i < this.viajes.length; i++){
+          if (this.viajes[i].id == this.usuario.viajeID){
+            this.idViaje = i;
+            break;
+          }
+        }
+      }
 
-        //usuario activo actual
-        this.servicioBD.fetchUsuario().subscribe(user => {
-          this.pasajero = user;
+    });
+  };
 
-            //por default
-            if (this.pasajero[this.usuarioID].viajeId != -1){
-              //transformar la id de la BD por la id del array
-              for (let i = 0; i < this.viajes.length; i++){
-                if (this.viajes[i].id == this.pasajero[this.usuarioID].viajeId){
-                  this.idViaje = i;
-                  this.menuDepth = 2;
-                  break;
-                }
-              }
-            }
+  async cargarBdd(){
+    this.cargarUsuario();
+    this.cargarViajes();
+  }
 
-        });
+  cargarUsuario(){
+    this.firestore.getDocument<usuariosI>('Usuarios',this.usuarioID).subscribe(res=>{
+      this.usuario = res;
+      console.log("usuario Cargado ",this.usuario)
+    });
+  }
+
+  async verificarViajeUsuario(){
+    this.firestore.getDocument<usuariosI>('Usuarios',this.usuarioID).subscribe(res=>{
+      if (res.viajeID != 'null'){
+        console.log("el usuario tenia algo")
+        let bol =  this.verificarViaje(res.viajeID);
+
+        if (!bol){
+          this.callDialog("Este viaje ya no esta disponible");
+          this.firestore.updateDoc({viajeID: 'null'},'Usuarios',this.usuarioID);
+          this.menuDepth = 0;
+        } else {
+          console.log("el usuario si tenia un viaje reservado")
+          this.menuDepth = 2;
+        }
+
+      } else {
+        console.log("el usuario tenia un null")
+        this.menuDepth = 0;
       }
     });
   }
 
-  
 
    //Verifica que el viaje que se tenga guardado exista (el length debe ser mayor a 1 para eso)
    verificarViaje(id){
-     return this.servicioBD.checkViaje(id).then(length=>{
-      return length;//console.log(res);
-    });
+    return this.firestore.checkDocumentExists('Viajes',id).then(res =>{
+      console.log("res: ",res);
+      return res;
+    })
+
   };
 
   
   async elegirViaje(id){
-    //actualizar los datos
-    await this.cargarBdd();
+    let bol = await this.verificarViaje(id);
+      //console.log("q: ",q);
 
-    //transformar la id de la BD por la del array
-    for (let i = 0; i < this.viajes.length; i++){
-      if (this.viajes[i].id == id){
-        this.idViaje = i;
-
-        //esta validacion es simulando como funcionanira en una BD de verdad
-        //Primero verifica que el viaje siga existiendo
-        if (this.verificarViaje(this.viajes[this.idViaje].id)){
-          //luego verifica que el viaje no haya empezado y que queden asientos
-            if ((this.viajes[this.idViaje].pasajeros >= this.viajes[this.idViaje].maxPasajeros) || (this.viajes[this.idViaje].estado != 0)){
-              this.callDialog("Este viaje ya no esta disponible");
-            } else {
-              this.menuDepth = 1;
-            }
-            break;
-          }
+    if (bol){
+      //transformar la id de la BD por la del array local
+      for (let i = 0; i < this.viajes.length; i++){
+        if (this.viajes[i].id == id){
+          this.idViaje = i;
         }
+      }
+      console.log("id viaje",this.idViaje)
+      this.menuDepth = 1;
+    } else {//Si el viaje que vas a reservar ya no existe
+      this.callDialog("Este viaje ya no esta disponible");
+      this.menuDepth = 0;
     }
   }
 
 
   async reservarViaje(){
-    //actualizar los datos
-    await this.cargarBdd();
+    //Primero verificar que ese viaje siga existiendo
+    let bol = await this.verificarViaje(this.viajes[this.idViaje].id);
 
-    //El try es en caso de que la base de datos ya no se quede con viajes y por ende, el array quede vacio
-    try{
-      //Primero verifica que el viaje siga existiendo
-      if (this.verificarViaje(this.viajes[this.idViaje].id)){
-        //luego verifica que el viaje no haya empezado y que queden asientos
-        if ((this.viajes[this.idViaje].pasajeros >= this.viajes[this.idViaje].maxPasajeros) || (this.viajes[this.idViaje].estado != 0)){
-            //si el viaje ya empezo o no quedan asientos disponibles
-            this.callDialog("Este viaje ya no esta disponible");
-            this.menuDepth = 0;
-        } else {
-            this.servicioBD.updatePasajerosViaje(this.viajes[this.idViaje].pasajeros+1,this.viajes[this.idViaje].id);
-            this.servicioBD.updateViajeUsuario(this.viajes[this.idViaje].id,this.pasajero[this.usuarioID].id);
-            this.menuDepth = 2;
-        }
-      } else {
-        //Si el viaje ya no existe (se cancelo), volver al menu
+    if (bol){
+      //luego verifica que el viaje no haya empezado y que queden asientos
+      if ((this.viajes[this.idViaje].pasajeros >= this.viajes[this.idViaje].maxPasajeros) || (this.viajes[this.idViaje].estado != 0)){
+        //si el viaje ya empezo o no quedan asientos disponibles
         this.callDialog("Este viaje ya no esta disponible");
         this.menuDepth = 0;
+      } else {
+        //Actualizar la cantidad de pasajeros del viaje
+        this.firestore.updateDoc({pasajeros: this.viajes[this.idViaje].pasajeros+1}, 'Viajes',this.viajes[this.idViaje].id);
+        //Actualizar el viaje del usuario
+        this.firestore.updateDoc({viajeID: this.viajes[this.idViaje].id}, 'Usuarios',this.usuarioID);
+        this.menuDepth = 2;
+
+        //pasajeros: 1
       }
-    } catch(error){
+      
+    } else {//Si el viaje que vas a reservar ya no existe
       this.callDialog("Este viaje ya no esta disponible");
       this.menuDepth = 0;
     }
   }
 
   cancelarReserva(){
-    this.servicioBD.updatePasajerosViaje(this.viajes[this.idViaje].pasajeros-1,this.viajes[this.idViaje].id);
-    this.servicioBD.updateViajeUsuario(-1,this.pasajero[this.usuarioID].id); //el -1 le indica a la carga de la BD que el usuario ya no tiene reservacion en algun viaje
+    //Actualizar la cantidad de pasajeros del viaje
+    this.firestore.updateDoc({pasajeros: this.viajes[this.idViaje].pasajeros-1}, 'Viajes',this.viajes[this.idViaje].id);
+    //Actualizar el viaje del usuario
+    this.firestore.updateDoc({viajeID: 'null'}, 'Usuarios',this.usuarioID);
     this.menuDepth = 0;
   }
 
