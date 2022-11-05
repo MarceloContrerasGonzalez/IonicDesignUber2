@@ -22,10 +22,7 @@ export class DbserviceService {
   
   //Tabla de viajes
   tbViajes: string = "CREATE TABLE IF NOT EXISTS viajesActivos(id INTEGER PRIMARY KEY autoincrement, Userid INTEGER NOT NULL, pasajeros INTEGER(1) NOT NULL, maxPasajeros INTEGER(1) NOT NULL, tarifa INTEGER(5) NOT NULL, destino VARCHAR(100) NOT NULL, patente VARCHAR(6) NOT NULL, informacion VARCHAR(240), estado INTEGER NOT NULL);";
-<<<<<<< HEAD
   tblAsistencias: string = "CREATE TABLE IF NOT EXISTS asistencia(id INTEGER PRIMARY KEY autoincrement, idAlumno INTEGER NOT NULL, ramo VARCHAR(100) NOT NULL, fecha VARCHAR(50) NOT NULL);";
-=======
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
   listaViajes = new BehaviorSubject([]);
   quant: number;
   
@@ -77,7 +74,6 @@ export class DbserviceService {
     return this.database.executeSql('SELECT * FROM activeUser',[]).then(res=>{
       let items: ActiveUser[]=[];
 
-<<<<<<< HEAD
       //Devolver todos los usuarios
       if(res.rows.length>0){
         for (var i = 0; i < res.rows.length; i++) {
@@ -89,17 +85,6 @@ export class DbserviceService {
             viajeId: res.rows.item(i).viajeId
           });  
         }
-=======
-      //Devolver al usuario con la id mas alta en la tabla, al fin y al cabo, solo deberia guardar 1 usuario
-      if(res.rows.length>0){
-        items.push({
-          id: res.rows.item(res.rows.length-1).id,
-          nombre: res.rows.item(res.rows.length-1).nombre,
-          username: res.rows.item(res.rows.length-1).username,
-          password: res.rows.item(res.rows.length-1).password,
-          viajeId: res.rows.item(res.rows.length-1).viajeId
-        });  
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
       }
 
       this.listaUsuarios.next(items);
@@ -144,15 +129,12 @@ export class DbserviceService {
     });
   };
 
-<<<<<<< HEAD
   checkUsersExists(){
     return this.database.executeSql('SELECT * FROM activeUser',).then(res=>{
       return res.rows.length;
     });
   }
 
-=======
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
 
 
 

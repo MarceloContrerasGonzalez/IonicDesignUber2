@@ -6,3 +6,31 @@ npm install --save @teamhive/lottie-player
 <Angular material>
 npm install -g @angular/cli
 ng add @angular/material
+
+<http>
+-importar HttpClientModule en app.module.ts
+import { HttpClientModule } from '@angular/common/http';
+-importar HttpClientModule en imports:
+
+<storage / sqLite>
+1.- Instalar los elementos sqlite para capacitor
+npm install cordova-sqlite-storage 
+npm install @awesome-cordova-plugins/sqlite 
+
+2.- Agregar los plugin para que reconosca el proyecto en app.module.ts
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+-importar SQLite en providers
+providers: [{}, SQLite]
+
+<Maps>
+npm install cordova-plugin-geolocation
+npm install @awesome-cordova-plugins/geolocation
+
+<firebase>
+--instalar la libreria de firebase para angular, angularfire2
+npm install firebase @angular/fire --save
+
+npm install cordova-plugin-firebase 
+npm install @awesome-cordova-plugins/firebase 
+
+<loguearse con fire>

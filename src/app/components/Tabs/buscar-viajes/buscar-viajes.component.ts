@@ -21,10 +21,7 @@ export class BuscarViajesComponent implements OnInit {
   pasajero: ActiveUser[];
   idViaje;//id del viaje dentro del array de datos locales
   menuDepth: Number = 0;
-<<<<<<< HEAD
   usuarioID = parseInt(localStorage.getItem('usuarioActivo'));
-=======
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
   
   
   
@@ -45,21 +42,12 @@ export class BuscarViajesComponent implements OnInit {
     this.cargarBdd();
 
     //Verificar si el pasajero tiene un viaje reservado, y comprobar si ese viaje siga activo
-<<<<<<< HEAD
     if (this.pasajero[this.usuarioID].viajeId != -1){
       let q = await this.verificarViaje(this.pasajero[this.usuarioID].viajeId);
 
       if (q <= 0){
         this.callDialog("Este viaje ya no esta disponible");
         this.servicioBD.updateViajeUsuario(-1,this.pasajero[this.usuarioID].id); //el -1 le indica a la carga de la BD que el usuario ya no tiene reservacion en algun viaje
-=======
-    if (this.pasajero[0].viajeId != -1){
-      let q = await this.verificarViaje(this.pasajero[0].viajeId);
-
-      if (q <= 0){
-        this.callDialog("Este viaje ya no esta disponible");
-        this.servicioBD.updateViajeUsuario(-1,this.pasajero[0].id); //el -1 le indica a la carga de la BD que el usuario ya no tiene reservacion en algun viaje
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
         this.menuDepth = 0;
       } 
     } else {
@@ -96,17 +84,10 @@ export class BuscarViajesComponent implements OnInit {
           this.pasajero = user;
 
             //por default
-<<<<<<< HEAD
             if (this.pasajero[this.usuarioID].viajeId != -1){
               //transformar la id de la BD por la id del array
               for (let i = 0; i < this.viajes.length; i++){
                 if (this.viajes[i].id == this.pasajero[this.usuarioID].viajeId){
-=======
-            if (this.pasajero[0].viajeId != -1){
-              //transformar la id de la BD por la id del array
-              for (let i = 0; i < this.viajes.length; i++){
-                if (this.viajes[i].id == this.pasajero[0].viajeId){
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
                   this.idViaje = i;
                   this.menuDepth = 2;
                   break;
@@ -169,11 +150,7 @@ export class BuscarViajesComponent implements OnInit {
             this.menuDepth = 0;
         } else {
             this.servicioBD.updatePasajerosViaje(this.viajes[this.idViaje].pasajeros+1,this.viajes[this.idViaje].id);
-<<<<<<< HEAD
             this.servicioBD.updateViajeUsuario(this.viajes[this.idViaje].id,this.pasajero[this.usuarioID].id);
-=======
-            this.servicioBD.updateViajeUsuario(this.viajes[this.idViaje].id,this.pasajero[0].id);
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
             this.menuDepth = 2;
         }
       } else {
@@ -189,11 +166,7 @@ export class BuscarViajesComponent implements OnInit {
 
   cancelarReserva(){
     this.servicioBD.updatePasajerosViaje(this.viajes[this.idViaje].pasajeros-1,this.viajes[this.idViaje].id);
-<<<<<<< HEAD
     this.servicioBD.updateViajeUsuario(-1,this.pasajero[this.usuarioID].id); //el -1 le indica a la carga de la BD que el usuario ya no tiene reservacion en algun viaje
-=======
-    this.servicioBD.updateViajeUsuario(-1,this.pasajero[0].id); //el -1 le indica a la carga de la BD que el usuario ya no tiene reservacion en algun viaje
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
     this.menuDepth = 0;
   }
 

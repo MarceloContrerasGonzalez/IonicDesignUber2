@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-<<<<<<< HEAD
 //Firebase
 import { FirestoreService } from 'src/app/services/Firebase/FireStore DB/firestore.service';
 import { usuariosI } from 'src/app/models/models';
-=======
-
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
 
 
 @Component({
@@ -15,7 +11,6 @@ import { usuariosI } from 'src/app/models/models';
 })
 
 export class HomePage {
-<<<<<<< HEAD
   usuarioID = localStorage.getItem('usuarioActivo');
 
   constructor(private firestore: FirestoreService) {}
@@ -31,10 +26,5 @@ export class HomePage {
       console.log("usuario cargado en home page",res)
     });
   }
-=======
-  constructor() {}
-    ngOnInit() {
-    };
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
   
 }

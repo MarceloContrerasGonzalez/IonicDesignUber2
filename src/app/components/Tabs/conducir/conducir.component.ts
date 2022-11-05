@@ -26,10 +26,7 @@ export class ConducirComponent implements OnInit {
   conductor: ActiveUser[];
   menuDepth: Number = 0;
   ubicacion: any;
-<<<<<<< HEAD
   usuarioID = parseInt(localStorage.getItem('usuarioActivo'));
-=======
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
 
   //validador
   field: String = "";
@@ -91,11 +88,7 @@ export class ConducirComponent implements OnInit {
   checkIDviaje(){
      //Recorrer la base de datos para detectar si eres conductor de un viaje
      for (let i = 0; i < this.viajes.length; i++){
-<<<<<<< HEAD
       if (this.viajes[i].Userid == this.conductor[this.usuarioID].id){
-=======
-      if (this.viajes[i].Userid == this.conductor[0].id){
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
 
         //this.presentToast(this.viajes[i].Userid + " / " + this.conductor[0].id)
 
@@ -113,11 +106,7 @@ export class ConducirComponent implements OnInit {
         }
         break;//solo deberias tener un viaje activo a la vez, por eso el break, empezando por el mas antiguo
       } else {
-<<<<<<< HEAD
         console.log("El viaje de id " + i + "no coincidio con la del conductor " + this.conductor[this.usuarioID].id)
-=======
-        console.log("El viaje de id " + i + "no coincidio con la del conductor " + this.conductor[0].id)
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
       }
     }
   }
@@ -125,11 +114,7 @@ export class ConducirComponent implements OnInit {
   updateCheck(){
      //Actualizar la id del viaje con el que creaste
      for (let i = 0; i < this.viajes.length; i++){
-<<<<<<< HEAD
       if (this.viajes[i].Userid == this.conductor[this.usuarioID].id){
-=======
-      if (this.viajes[i].Userid == this.conductor[0].id){
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
         this.idViaje = i;
       }
      }
@@ -146,11 +131,7 @@ export class ConducirComponent implements OnInit {
   }
 
   crearViaje(){
-<<<<<<< HEAD
     let userID = this.conductor[this.usuarioID].id;
-=======
-    let userID = this.conductor[0].id;
->>>>>>> e4ca7ea5443071a28b5ff9255dd1a9d420f886c3
     //this.presentToast(userID + "");
     //El viaje empezara con 0 pasajeros a bordo y en el estado 0 de viaje
     this.servicioBD.addViaje(userID, 0 ,this.form.pasajero,this.form.tarifa,this.form.destino,this.form.patente,this.form.informacion, 0);
