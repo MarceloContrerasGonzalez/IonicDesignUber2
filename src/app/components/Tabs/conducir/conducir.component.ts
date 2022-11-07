@@ -147,9 +147,12 @@ export class ConducirComponent implements OnInit {
           }
         }
 
-        case 'tarifa': {
-          if (value <= 0) {
-            this.callDialog("La tarifa debe ser un numero en positivo");
+        case 'tarifa':{
+          if (value <= 0){
+            this.callDialog("La tarifa no puede ser negativa");
+            return false;
+          } else if (value > 3500){
+            this.callDialog("La tarifa no puede superar los $3500 por persona");
             return false;
           }
         }

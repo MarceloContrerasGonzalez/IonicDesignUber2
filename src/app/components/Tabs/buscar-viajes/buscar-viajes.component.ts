@@ -84,16 +84,22 @@ export class BuscarViajesComponent implements OnInit {
     this.firestore.getDocument<usuariosI>('Usuarios',this.usuarioID).subscribe(res=>{
       if (res.viajeID != 'null'){
         console.log("el usuario tenia algo")
-        let bol =  this.verificarViaje(res.viajeID);
+          this.verificarViaje(res.viajeID).then(res=>{
+            console.log("res dentro de verificar",res);
+            let bol = res;
 
-        if (!bol){
-          this.callDialog("Este viaje ya no esta disponible");
-          this.firestore.updateDoc({viajeID: 'null'},'Usuarios',this.usuarioID);
-          this.menuDepth = 0;
-        } else {
-          console.log("el usuario si tenia un viaje reservado")
-          this.menuDepth = 2;
-        }
+            if (!bol){
+              console.log("el viaje ya no existe")
+              this.callDialog("Este viaje ya no esta disponible");
+              this.firestore.updateDoc({viajeID: 'null'},'Usuarios',this.usuarioID);
+              this.menuDepth = 0;
+            } else {
+              console.log("el usuario si tenia un viaje reservado")
+              this.menuDepth = 2;
+            }
+        })
+
+        
 
       } else {
         console.log("el usuario tenia un null")
@@ -103,7 +109,7 @@ export class BuscarViajesComponent implements OnInit {
   }
 
 
-   //Verifica que el viaje que se tenga guardado exista (el length debe ser mayor a 1 para eso)
+   //Verifica que el viaje que se tenga guardado exista
    verificarViaje(id){
     return this.firestore.checkDocumentExists('Viajes',id).then(res =>{
       console.log("res: ",res);
