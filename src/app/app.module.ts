@@ -17,10 +17,12 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 //importar db firebase (cloud firestore)
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 
+import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
+
 @NgModule({
   declarations: [
     AppComponent,  
-    //DialogComponent
+    DialogComponent
   ],
   imports: [
     HttpClientModule,
@@ -39,6 +41,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
       useClass: IonicRouteStrategy 
     }, SQLite],
   bootstrap: [AppComponent],
+  entryComponents: [DialogComponent]
 })
 
 export class AppModule {}
