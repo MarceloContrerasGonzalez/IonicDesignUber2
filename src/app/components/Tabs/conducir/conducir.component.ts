@@ -6,11 +6,6 @@ import { ModalController } from '@ionic/angular';
 //componente maps
 import { MapsComponent } from '../../maps/maps.component';
 
-//importar BD SQlite
-//import { ActiveUser } from 'src/app/clases/active-user';
-//import { Viajes } from 'src/app/clases/viajes';
-//import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
-
 //Firebase
 import { FirestoreService } from 'src/app/services/Firebase/FireStore DB/firestore.service';
 import { ViajesI } from 'src/app/models/models';
@@ -25,12 +20,10 @@ import { DialogComponent } from 'src/app/components/shared/dialog/dialog.compone
   styleUrls: ['./conducir.component.scss'],
 })
 export class ConducirComponent implements OnInit {
-  //viajes: Viajes[];
   //Viajes firebases
   viajes: any[] = [];
 
   idViaje;//si le pongo any me da error, si le pongo number no puedo hacerle un index en el scrip delete, mejor no ponerle nada
-  //conductor: ActiveUser[];
   menuDepth: Number = 0;
   ubicacion: any;
   usuarioID = localStorage.getItem('usuarioActivo');
@@ -50,7 +43,6 @@ export class ConducirComponent implements OnInit {
 
   constructor(
     public toastController: ToastController,
-    //private servicioBD: DbserviceService,
     private firestore: FirestoreService,
     private modalController: ModalController,
     public dialog: MatDialog
@@ -61,9 +53,7 @@ export class ConducirComponent implements OnInit {
   ngOnInit() {
     this.idViaje = 0;
     //Cargar la base de datos
-    ////this.cargarBdd();
     this.cargarViajes();
-    // this.checkIDviaje();
     localStorage.removeItem('preferenciaViaje')
     localStorage.setItem('preferenciaAuto', 'true')
   }
@@ -73,7 +63,6 @@ export class ConducirComponent implements OnInit {
     this.idViaje = 0;
     //Actualizar la base de datos
     this.cargarViajes();
-    //this.checkIDviaje();
   }
 
   cargarViajes() {
@@ -107,7 +96,6 @@ export class ConducirComponent implements OnInit {
   }
 
   empezarViaje() {
-    // this.servicioBD.updateEstadoViaje(1,this.viajes[this.idViaje].id);//el 1 es el estado de que el viaje ya empezo, evitara que mas clientes reserven
     this.firestore.updateDoc({ estado: 1 }, 'Viajes', this.viajes[this.idViaje].id);
     this.menuDepth = 2;
   }

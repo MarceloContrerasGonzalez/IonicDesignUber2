@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
-/* import { ApiClientService } from 'src/app/services/Api/api-client.service'; */
-
-//importar BD SQlite
-import { Viajes } from 'src/app/clases/viajes';
-import { ActiveUser } from 'src/app/clases/active-user';
-import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
 
 //Dialog angular material
 import { MatDialog } from '@angular/material/dialog';
@@ -121,7 +115,6 @@ export class BuscarViajesComponent implements OnInit {
   
   async elegirViaje(id){
     let bol = await this.verificarViaje(id);
-      //console.log("q: ",q);
 
     if (bol){
       //transformar la id de la BD por la del array local

@@ -22,7 +22,6 @@ export class HomePage {
 
   async cargarUsuario(){
     await this.firestore.getDocument<usuariosI>('Usuarios',this.usuarioID).subscribe(res=>{
-      //this.usuario = res;
       console.log("usuario cargado en home page",res)
     });
   }

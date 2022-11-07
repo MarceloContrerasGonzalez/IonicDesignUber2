@@ -2,11 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController, NavController } from '@ionic/angular';
 
-//importar BD SQlite
-//import { ActiveUser } from 'src/app/clases/active-user';
-//import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
-
-
  //Firebase
 import { FirestoreService } from 'src/app/services/Firebase/FireStore DB/firestore.service';
 import { usuariosI } from 'src/app/models/models';
@@ -25,10 +20,8 @@ export class InicioComponent implements OnInit {
   usuarioID = localStorage.getItem('usuarioActivo');
 
   constructor(
-    //private servicioBD: DbserviceService,
     private firestore: FirestoreService,
     public toastController: ToastController,
-    //private router: Router,
     public navControl: NavController
   ) {}
 
@@ -56,24 +49,12 @@ export class InicioComponent implements OnInit {
       this.usuario = res;
       console.log("usuario cargardo",res)
     });
-    //Cargar la base de datos
-    /*this.servicioBD.dbState().subscribe((res)=>{
-      if(res){
-        this.servicioBD.fetchUsuario().subscribe(item=>{
-          this.usuarios=item;
-        })
-      }
-    });
-    */
   }
 
   Cerrar(){
-    //this.servicioBD.deleteAllUsuarios();
     localStorage.removeItem('ingresado')
     localStorage.removeItem('usuarioActivo')
-   //this.router.navigate(['/login']);
-    this.navControl.navigateRoot(['/login']);
-    //this.router.navigate(["login"], { replaceUrl: true });
+    this.navControl.navigateRoot(['/login']);//Con navControl, se elimina de la memoria las pag anteriores
   };  
 
 

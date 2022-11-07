@@ -2,19 +2,11 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import {  Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 
-
-//Clases
-//import { ActiveUser } from 'src/app/clases/active-user';
-
 //Dialog
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
 
 import { ApiClientService } from 'src/app/services/Api/api-client.service';
-
-//importar BDD storage
-//import { StorageServiceService } from 'src/app/services/Storage/storage-service.service';
-//import { DbserviceService } from 'src/app/services/SQL/dbservice.service';
 
 //Splash screen
 import { AnimationOptions } from 'ngx-lottie';
@@ -64,25 +56,11 @@ export class LoginPage implements OnInit {
 		public toastController: ToastController,
 		private animationCtrl: AnimationController,
 		private api: ApiClientService,
-		//private dbservice: DbserviceService,
 		public dialog: MatDialog,
 		private firestore: FirestoreService
 	) {}
 	
-	ionViewWillEnter(){
-		
-		//rescartar a los usuarios del sqlite
-		/*this.dbservice.dbState().subscribe((res)=>{
-			if(res){
-			  this.dbservice.fetchUsuario().subscribe(user => {
-				this.usuarios = user;
-			  });
-			}
-		  });*/
-
-		//this.getEstudiantes();
-		
-	}
+	ionViewWillEnter(){}
 
 	async getUsuariosApi(){
 		this.api.getUsuarios().subscribe((data)=>{
@@ -95,19 +73,10 @@ export class LoginPage implements OnInit {
 		  //Hacer un bucle for con todos los alumnos recogidos y pasarlos a firebase
 		  for (let i = 0; i < this.alumnos.length; i++){
 				console.log("Bucle for")
-				//this.dbservice.addUsuario(this.alumnos[i].id, this.alumnos[i].nombre, this.alumnos[i].username, this.alumnos[i].password);
-				//this.firestore.createDoc()
 				this.crearUsuarios(this.alumnos[i].nombre,this.alumnos[i].username,this.alumnos[i].password,(i+1).toString())
 		  }
 		});
 	};
-
-	//Crea al usuario y lo guarda en la base de datos
-	/*guardarBDD(id, name, user, pass) {
-		this.dbservice.addUsuario(id, name,user,pass);
-		//this.dbservice.presentToast("Usuario guardado");
-	}
-	*/
 
 	 //Validar que los campos no esten vacios
 	 validador(model: any){
@@ -131,7 +100,6 @@ export class LoginPage implements OnInit {
 				if ((this.user.usuario == this.usuarios[i].username) && (this.user.password == this.usuarios[i].password))
 				{
 					console.log("VALIDADO EL USUARIO");
-					//this.guardarBDD(this.alumnos[i].id, this.alumnos[i].nombre,this.user.usuario,this.user.password);
 					localStorage.setItem('usuarioActivo',this.usuarios[i].id)
 					localStorage.setItem('ingresado','true')
 					this.router.navigate(['/home'])
@@ -147,7 +115,6 @@ export class LoginPage implements OnInit {
 				this.dataUserError("El usuario y/o la contraseña son incorrectos");
 			}
 		}else{
-			//this.presentToast("Error en "+this.field);
 			this.bolShowUserError = true;
 			this.bolShowPasswordError =true;
 		}
@@ -214,7 +181,6 @@ export class LoginPage implements OnInit {
 				this.getUsuariosApi();
 			} else {
 				//Cargarlos directamente en la memoria local
-				//console.log("res",res)
 				this.usuarios = res;
 				console.log("usuarios",this.usuarios)
 			}
