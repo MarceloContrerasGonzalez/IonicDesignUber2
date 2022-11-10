@@ -1,0 +1,41 @@
+.Home_tittle{
+    text-align: center;
+    text-overflow: wrap;
+    max-height: 13%;
+}
+
+  .Home_tittle h1{
+    font-weight: bold;
+    font-size: 25px;
+    max-height: 60px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+  .Home_tittle h2{
+    font-size: 20px;
+    margin-bottom: 5px;
+    font-weight: lighter;
+  }
+  
+  .buttons_div{
+    margin-top: 10%;
+    overflow: auto;
+  }
+  
+  .buttons_div img{
+    height: auto;
+    
+  }
+  
+  .Home_tittle img{
+    width: 50%;
+    height: auto;
+    margin-left: 5%;
+  }
+
+  .session_button{
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 35%;
+  }
