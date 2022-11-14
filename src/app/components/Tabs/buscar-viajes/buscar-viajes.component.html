@@ -87,6 +87,8 @@
       <!-- *ngIf="viaje.pasajeros < viaje.maxPasajeros && viaje.estado == 0" -->
       <ion-card-content  *ngIf="viaje.pasajeros < viaje.maxPasajeros && viaje.estado == 0" class="card_padding" (click)="elegirViaje(viaje.id)">
         <ion-row>
+          <ion-label>Hora de partida: {{viaje.hora}}</ion-label>
+
           <ion-col class="img_col">
             <img src="assets/icon/map_mark_icon.png" alt="Marcador">
           </ion-col>

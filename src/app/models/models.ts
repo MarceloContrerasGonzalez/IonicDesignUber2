@@ -11,6 +11,7 @@ export interface ViajesI{
     pasajeros: number;
     maxPasajeros: number;
     tarifa: number;
+    hora: string;
     destino: string;
     patente: string;
     informacion: string;

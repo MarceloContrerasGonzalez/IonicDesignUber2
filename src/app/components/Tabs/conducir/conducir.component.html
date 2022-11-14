@@ -63,6 +63,26 @@
           </ion-item>
       </div>
 
+      <div>
+        
+        <ion-item class="no-click">
+          <ion-label id="datetimeValue">Hora del viaje {{hora}}</ion-label>
+
+          <ion-datetime-button datetime="time"><ion-label>cambia hora</ion-label></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime #datetime (ionChange)="getTimePicker(datetime.value)" presentation="time" id="time"></ion-datetime>
+              
+            </ng-template>
+          </ion-modal>
+        
+      </ion-item>
+
+        
+      
+
+      </div>
+
         
         <mat-form-field class="mat_field" appearance="fill">
           <mat-label>Patente del vehiculo</mat-label>

@@ -18,12 +18,13 @@ export class InicioComponent implements OnInit {
     password: ""
   };
   usuarioID = localStorage.getItem('usuarioActivo');
-
+  
   constructor(
     private firestore: FirestoreService,
     public toastController: ToastController,
     public navControl: NavController
   ) {}
+
 
   ngOnInit() {
     this.usuarioID = localStorage.getItem('usuarioActivo');
@@ -38,10 +39,6 @@ export class InicioComponent implements OnInit {
     console.log("id usuario cargado will",this.usuarioID)
     this.cargarUsuario();
     
-  }
-
-  ionViewDidEnter(){
-    console.log("awuebo did")
   }
 
   cargarUsuario(){

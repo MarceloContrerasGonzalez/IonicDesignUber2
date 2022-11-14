@@ -13,6 +13,10 @@ import { ViajesI } from 'src/app/models/models';
 //Dialog angular material
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
+//import { format } from 'path';
+
+//Formatear hora
+import { format, parseISO } from 'date-fns'
 
 @Component({
   selector: 'app-conducir',
@@ -22,6 +26,7 @@ import { DialogComponent } from 'src/app/components/shared/dialog/dialog.compone
 export class ConducirComponent implements OnInit {
   //Viajes firebases
   viajes: any[] = [];
+  hora: string = '';
 
   idViaje;//si le pongo any me da error, si le pongo number no puedo hacerle un index en el scrip delete, mejor no ponerle nada
   menuDepth: Number = 0;
@@ -61,8 +66,24 @@ export class ConducirComponent implements OnInit {
   ionViewWillEnter() {
     this.menuDepth = 0;
     this.idViaje = 0;
+
+    //transformar la hora actual del sistema a un formato string
+    let timeFromSystem = new Date();
+    let valueToTransform = timeFromSystem.toLocaleTimeString();//timeFromSystem.toString();
+    //let valueTransformed = format(parseISO(valueToTransform),'HH:mm');
+    
+    console.log("from system",valueToTransform.substring(0,5) )
+    this.hora = valueToTransform.substring(0,5);
+    //this.hora = format(parseISO(timeFromSystem),'HH:mm')
+
     //Actualizar la base de datos
     this.cargarViajes();
+  }
+
+  getTimePicker(value){
+    let dateFromIonDateTime = value;
+    this.hora = format(parseISO(dateFromIonDateTime),'HH:mm')
+    console.log('hora transformada ',this.hora)
   }
 
   cargarViajes() {
@@ -106,6 +127,7 @@ export class ConducirComponent implements OnInit {
       pasajeros: 0,
       maxPasajeros: this.form.pasajero,
       tarifa: this.form.tarifa,
+      hora: this.hora,
       destino: this.form.destino,
       patente: this.form.patente,
       informacion: this.form.informacion,

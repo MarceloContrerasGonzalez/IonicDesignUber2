@@ -1,4 +1,16 @@
 /* Seccion del formulario */
+//Recoger hora
+#popcenter{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.no-click {
+    --ripple-color: transparent;
+    --background-activated: transparent;
+}
+
 #trip_button{
     //bottom: 10px;
     //margin-bottom: 5%;
