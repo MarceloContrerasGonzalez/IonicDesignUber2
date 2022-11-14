@@ -7,7 +7,7 @@ describe('new App', () => {
     page = new AppPage();
   });
 
-  it('should be blank', () => {
+  it('deberia estar el titulo de la app', () => {
     page.navigateTo();
     expect(page.getParagraphText()).toContain('Start with Ionic UI Components');
   });
