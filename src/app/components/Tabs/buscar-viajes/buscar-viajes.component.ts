@@ -9,6 +9,9 @@ import { DialogComponent } from 'src/app/components/shared/dialog/dialog.compone
 import { FirestoreService } from 'src/app/services/Firebase/FireStore DB/firestore.service';
 import { usuariosI, ViajesI } from 'src/app/models/models';
 
+//email composer
+import { EmailComposer, EmailComposerOptions } from '@awesome-cordova-plugins/email-composer/ngx';
+
 @Component({
   selector: 'app-buscar-viajes',
   templateUrl: './buscar-viajes.component.html',
@@ -18,6 +21,7 @@ export class BuscarViajesComponent implements OnInit {
   //viajes: Viajes[];
   viajes: any[]=[];
   usuario: usuariosI;
+  conductor: usuariosI;
  
   idViaje;//id del viaje dentro del array de datos locales
   menuDepth: Number = 0;
@@ -28,7 +32,8 @@ export class BuscarViajesComponent implements OnInit {
   constructor(
     public toastController: ToastController,
     private firestore: FirestoreService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private emailComposer: EmailComposer
   ){}
 
   async ngOnInit() {
@@ -42,6 +47,23 @@ export class BuscarViajesComponent implements OnInit {
     //Actualizar la base de datos
     this.cargarBdd();
     this.verificarViajeUsuario();
+  }
+
+  async openEmail(){
+    //console.log("conductor username",this.conductor.username+'@duocuc.cl');
+    //console.log("Usuario username",this.usuario.username+'@duocuc.cl')
+    
+    const email: EmailComposerOptions = {
+      to: this.conductor.username+'@duocuc.cl',
+      //this.viajes[this.idViaje].Userid
+      cc: this.usuario.username+'@duocuc.cl',
+      
+      subject: 'Te reserve un viaje',
+      body: 'sex',
+    };
+
+    await this.emailComposer.open(email);
+    
   }
 
   cargarViajes(){
@@ -71,6 +93,13 @@ export class BuscarViajesComponent implements OnInit {
     this.firestore.getDocument<usuariosI>('Usuarios',this.usuarioID).subscribe(res=>{
       this.usuario = res;
       console.log("usuario Cargado ",this.usuario)
+    });
+  }
+
+  cargarConductorViaje(id){
+    this.firestore.getDocument<usuariosI>('Usuarios',this.viajes[id].Userid).subscribe(res=>{
+      this.conductor = res;
+      console.log("conductor Cargado ",this.conductor)
     });
   }
 
@@ -121,6 +150,7 @@ export class BuscarViajesComponent implements OnInit {
       for (let i = 0; i < this.viajes.length; i++){
         if (this.viajes[i].id == id){
           this.idViaje = i;
+          this.cargarConductorViaje(i);
         }
       }
       console.log("id viaje",this.idViaje)
@@ -131,7 +161,7 @@ export class BuscarViajesComponent implements OnInit {
     }
   }
 
-
+  
   async reservarViaje(){
     //Primero verificar que ese viaje siga existiendo
     let bol = await this.verificarViaje(this.viajes[this.idViaje].id);
@@ -148,6 +178,7 @@ export class BuscarViajesComponent implements OnInit {
         //Actualizar el viaje del usuario
         this.firestore.updateDoc({viajeID: this.viajes[this.idViaje].id}, 'Usuarios',this.usuarioID);
         this.menuDepth = 2;
+        this.openEmail();
 
         //pasajeros: 1
       }

@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Importaciones angular material
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
-import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+//import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 
 //modulo angular fire / firebase
 import { AngularFireModule } from '@angular/fire/compat';
@@ -18,6 +18,8 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
+
+import { EmailComposer } from '@awesome-cordova-plugins/email-composer/ngx';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,7 @@ import { DialogComponent } from 'src/app/components/shared/dialog/dialog.compone
     { 
       provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 
-    }, SQLite],
+    }, EmailComposer],
   bootstrap: [AppComponent],
   entryComponents: [DialogComponent]
 })
