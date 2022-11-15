@@ -158,14 +158,6 @@ export class LoginPage implements OnInit {
 		this.firestore.createDoc(usuarios,'Usuarios',id)
 	  };
 
-	  actualizarUsuario(){
-		const update ={
-			nombre: 'update2',
-			username: 'update@duoc3'
-		}
-		this.firestore.updateDoc(update,'Usuarios','1');
-	  }
-
 	  getUsuarios(){
 		this.firestore.getCollections('Usuarios').subscribe( res => {
 			console.log("contenido: ",res)
@@ -186,8 +178,6 @@ export class LoginPage implements OnInit {
 			}
 			//return res.length;
 		});
-		
-		
 	  };
 
 	  async presentToast(msg:string) {

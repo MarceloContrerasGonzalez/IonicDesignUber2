@@ -4,6 +4,11 @@
     text-align: center;
 }
 
+.hora{
+    font-weight: bold;
+    color: black;
+}
+
 .card_padding{
     padding: 0;
 }
@@ -26,12 +31,12 @@
 }
 
 .ruta_col h3{ 
-    font-size: 19px;
+    font-size: 15px;
     font-weight: bold;
 }
 
 .pas_col{
-    max-width: 14%;
+    max-width: 12%;
     display: flex;
     align-items: center;
     justify-content: center;

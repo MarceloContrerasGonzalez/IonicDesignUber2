@@ -59,7 +59,7 @@ export class BuscarViajesComponent implements OnInit {
       cc: this.usuario.username+'@duocuc.cl',
       
       subject: 'Te reserve un viaje',
-      body: 'sex',
+      body: 'Te reserve un viaje que tenias creado con direccion a '+this.viajes[this.idViaje].destino,
     };
 
     await this.emailComposer.open(email);

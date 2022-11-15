@@ -5,10 +5,19 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-item *ngIf="usuario.nombre == ''" class="ion-padding custom-skeleton">
+    <ion-label>
+      <ion-skeleton-text animated style="width: 100%;"></ion-skeleton-text>
+    </ion-label>
+  </ion-item>  
+  
   <div class="Home_tittle">
-    <h1>¡Bienvenido</h1>
-<!-- *ngIf="usuarios" -->
-    <h1  >{{usuario.nombre}}! | {{usuarioID}}</h1>
+    <div *ngIf="usuario.nombre != ''">
+      <h1>¡Bienvenido</h1>
+      <!-- *ngIf="usuarios" -->
+          <h1  >{{usuario.nombre}}!</h1>
+    </div>
+
     <br>
     <img src="assets/img/user.png" alt="">
     <h2>Que deseas hacer?</h2>
