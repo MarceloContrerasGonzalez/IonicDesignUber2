@@ -28,15 +28,13 @@
     <br>
     <ion-item>
       <ion-label><ion-icon name="person-circle-outline"></ion-icon></ion-label>
-      <ion-input placeholder="Usuario" type="text" [(ngModel)]="user.usuario" minLength="4" (click)="this.bolShowUserError = true" required> </ion-input>
+      <ion-input class="ingresar_usuario" placeholder="Usuario" type="text" [(ngModel)]="user.usuario" minLength="4" (click)="this.bolShowUserError = true" required> </ion-input>
       <span slot="error" *ngIf="bolShowUserError">Ingrese Un Usuario Valido</span>
     </ion-item>
       
     <ion-item>
       <ion-label><ion-icon name="lock-closed-outline"></ion-icon></ion-label>
-
-
-      <ion-input placeholder="Contraseña" type="password" required [(ngModel)]="user.password" (click)="this.bolShowPasswordError = true" required>  </ion-input>
+      <ion-input class="ingresar_contrasena" placeholder="Contraseña" type="password" required [(ngModel)]="user.password" (click)="this.bolShowPasswordError = true" required>  </ion-input>
       <span slot="error" *ngIf="bolShowPasswordError">Contraseña Invalida</span>
     </ion-item>
 

@@ -34,3 +34,14 @@ npm install cordova-plugin-firebase
 npm install @awesome-cordova-plugins/firebase 
 
 <loguearse con fire>
+
+para las pruebas e2e usamos cypress (aplicacion de escritorio)
+
+--comando para instalar las dependencias de cypress
+npm install cypress --save-dev
+
+--comando para abrir cypress
+npx cypress open
+
+
+
