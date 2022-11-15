@@ -39,6 +39,7 @@
     "cordova-plugin-geolocation": "^4.1.0",
     "cordova-plugin-lottie-splashscreen": "^0.9.6",
     "cordova-sqlite-storage": "^6.0.0",
+    "cypress": "^11.1.0",
     "date-fns": "^2.29.3",
     "firebase": "^9.12.1",
     "lottie-web": "^5.9.6",
