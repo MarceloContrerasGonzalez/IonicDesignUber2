@@ -33,4 +33,8 @@ npm install firebase @angular/fire --save
 npm install cordova-plugin-firebase 
 npm install @awesome-cordova-plugins/firebase 
 
-<loguearse con fire>
+<lo que ocupe para pasar los iconos>
+npm install -g cordova-res
+cordova-res android --skip-config --copy
+
+me tiro errores de vulnerabilidad en la laptop pero igual paso el icono

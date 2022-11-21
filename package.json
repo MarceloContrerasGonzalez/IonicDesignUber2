@@ -42,6 +42,7 @@
     "cypress": "^11.1.0",
     "date-fns": "^2.29.3",
     "firebase": "^9.12.1",
+    "loader-utils": "^3.2.1",
     "lottie-web": "^5.9.6",
     "ng-lottie": "^0.3.2",
     "ngx-lottie": "^9.0.1",
