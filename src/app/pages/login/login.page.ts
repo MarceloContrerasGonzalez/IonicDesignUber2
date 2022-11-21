@@ -9,7 +9,7 @@ import { DialogComponent } from 'src/app/components/shared/dialog/dialog.compone
 import { ApiClientService } from 'src/app/services/Api/api-client.service';
 
 //Splash screen
-import { AnimationOptions } from 'ngx-lottie';
+/* import { AnimationOptions } from 'ngx-lottie'; */
 
 //Animaciones
 import { AnimationController } from '@ionic/angular';
@@ -46,11 +46,11 @@ export class LoginPage implements OnInit {
 
 
 	//Splash screen
-	options: AnimationOptions = {
+	/* options: AnimationOptions = {
 		path: '/assets/lottie/splash.json'
 	  }
 	bolShowSplash: boolean = true ;//Dejar al splash screen visible por defecto
-
+ */
 	constructor(
 		private router: Router,
 		public toastController: ToastController,
@@ -132,7 +132,7 @@ export class LoginPage implements OnInit {
 		this.cargarUsuarios();
 
 		setTimeout(() => {
-			this.bolShowSplash = false;
+			/* this.bolShowSplash = false; */
 			
 
 			//Animacion del logo solo despues del splash screen (girara 360 grado)
