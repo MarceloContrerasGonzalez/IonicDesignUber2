@@ -15,7 +15,7 @@ describe('e2e-prueba-movil', () => {
     
     //verificar mensaje de error en datos incorrectos (recuperar contraseña)
     cy.get('.recuperar_usuario').type('marc.contrera').should('have.value', 'marc.contrera')
-    cy.wait(700)
+    cy.wait(1000)
     cy.contains('Siguiente').click()
     cy.contains('Ok').click()
     
