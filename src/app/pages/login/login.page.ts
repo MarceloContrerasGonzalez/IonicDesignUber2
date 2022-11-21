@@ -128,24 +128,26 @@ export class LoginPage implements OnInit {
 	}
 
 	  ngOnInit() {
+		const logoanimation = this.animationCtrl.create()
+		.addElement( this.logo.nativeElement)
+		.duration(2000)
+		.keyframes([
+			{ offset: 0, transform: 'scale(0.5) rotate(0deg)', opacity: 0},
+			{ offset: 1, transform: 'scale(1) rotate(360deg)', opacity: 1 }
+			])
+			logoanimation.play();//iniciar la animacion del logo
+			
 		//verificar si la base de datos esta vacia para pasarle los datos de la api GITHUB
 		this.cargarUsuarios();
 
-		setTimeout(() => {
+		/*setTimeout(() => {
 			/* this.bolShowSplash = false; */
 			
 
 			//Animacion del logo solo despues del splash screen (girara 360 grado)
-			const logoanimation = this.animationCtrl.create()
-			.addElement( this.logo.nativeElement)
-			.duration(2000)
-			.keyframes([
-				{ offset: 0, transform: 'scale(0.5) rotate(0deg)', opacity: 0},
-				{ offset: 1, transform: 'scale(1) rotate(360deg)', opacity: 1 }
-			  ])
-			  logoanimation.play();//iniciar la animacion del logo
+			
 
-		  }, 2000);  //2s
+		 // }, 2000);  //2s
 	  };
 
 	  crearUsuarios(name: string, username:string, password:string, id:string){
