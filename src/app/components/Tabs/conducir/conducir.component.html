@@ -47,7 +47,7 @@
 
         <mat-form-field class="mat_field" appearance="fill" floatLabel="always">
           <mat-label>Tarifa por persona</mat-label>
-          <input matInput type="number" class="example-right-align tarifatest" placeholder="0" min="1" max="3500" name="tarifa" [(ngModel)]="form.tarifa">
+          <input matInput type="number" class="example-right-align tarifatest" placeholder="1000" min="1" max="3500" name="tarifa" [(ngModel)]="form.tarifa">
           <span matPrefix>$&nbsp;</span>
         </mat-form-field>
 
@@ -71,7 +71,7 @@
           <ion-datetime-button datetime="time"><ion-label>cambia hora</ion-label></ion-datetime-button>
           <ion-modal [keepContentsMounted]="true">
             <ng-template>
-              <ion-datetime #datetime (ionChange)="getTimePicker(datetime.value)" presentation="time" id="time"></ion-datetime>
+              <ion-datetime #datetime (ionChange)="getTimePicker(datetime.value)" presentation="time" id="time" [showDefaultButtons]="true" doneText="Hecho" cancelText="Cancelar"></ion-datetime>
               
             </ng-template>
           </ion-modal>
@@ -82,11 +82,9 @@
       
 
       </div>
-
-        
         <mat-form-field class="mat_field" appearance="fill">
           <mat-label>Patente del vehiculo</mat-label>
-          <input class="patentetest" matInput placeholder="XX-XX-10" name="patente" [(ngModel)]="form.patente">
+          <input class="patentetest" matInput placeholder="XX-XX-10" (input)="VehicleFormat()"  minlength="8" maxlength="8" name="patente" [(ngModel)]="form.patente">
         </mat-form-field>
 
         <mat-form-field class="mat_field " appearance="fill">

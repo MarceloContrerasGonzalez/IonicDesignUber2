@@ -39,8 +39,8 @@ export class ConducirComponent implements OnInit {
 
   //tripForm: FormGroup;
   form = {
-    pasajero: 0,//Cantidad de pasajeros maximos
-    tarifa: 0,
+    pasajero: "",//Cantidad de pasajeros maximos
+    tarifa: "",
     destino: "",
     patente: "",
     informacion: ""
@@ -72,8 +72,8 @@ export class ConducirComponent implements OnInit {
     let valueToTransform = timeFromSystem.toLocaleTimeString();//timeFromSystem.toString();
     //let valueTransformed = format(parseISO(valueToTransform),'HH:mm');
     
-    console.log("from system",valueToTransform.substring(0,5) )
-    this.hora = valueToTransform.substring(0,5);
+    console.log("from system",valueToTransform.substring(0,4) )
+    this.hora = valueToTransform.substring(0,4);
     //this.hora = format(parseISO(timeFromSystem),'HH:mm')
 
     //Actualizar la base de datos
@@ -84,6 +84,13 @@ export class ConducirComponent implements OnInit {
     let dateFromIonDateTime = value;
     this.hora = format(parseISO(dateFromIonDateTime),'HH:mm')
     console.log('hora transformada ',this.hora)
+  }
+
+  VehicleFormat(){
+    this.form.patente = this.form.patente.replace(/-/gi,"");
+    let formated = this.form.patente.slice(0, 2) + "-" + this.form.patente.slice(2, 4)  + "-" + this.form.patente.slice(4, 6);
+    this.form.patente = formated;
+    //console.log("formateado ",formated);
   }
 
   cargarViajes() {
@@ -125,8 +132,8 @@ export class ConducirComponent implements OnInit {
     const data: ViajesI = {
       Userid: this.usuarioID,
       pasajeros: 0,
-      maxPasajeros: this.form.pasajero,
-      tarifa: this.form.tarifa,
+      maxPasajeros: parseInt(this.form.pasajero),
+      tarifa: parseInt(this.form.tarifa),
       hora: this.hora,
       destino: this.form.destino,
       patente: this.form.patente,
@@ -152,17 +159,26 @@ export class ConducirComponent implements OnInit {
       switch (key) {
         case 'pasajero': {
           if ((value <= 0) || (value > 6)) {
-            this.callDialog("La cantidad de pasajeros debe ser mayor a 0 y menor a 6");
+            this.callDialog("La cantidad de pasajeros debe ser entre 1 y 6");
             return false;
           }
         }
 
+        
+
         case 'tarifa':{
           if (value <= 0){
-            this.callDialog("La tarifa no puede ser negativa");
+            this.callDialog("La tarifa debe valer entre $1 a $3500");
             return false;
           } else if (value > 3500){
             this.callDialog("La tarifa no puede superar los $3500 por persona");
+            return false;
+          }
+        }
+
+        case 'patente':{
+          if (this.form.patente.length <8){
+            this.callDialog("Debes establecer una patente para el vehiculo");
             return false;
           }
         }

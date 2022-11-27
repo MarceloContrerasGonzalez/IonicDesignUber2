@@ -20,6 +20,7 @@ import { EmailComposer, EmailComposerOptions } from '@awesome-cordova-plugins/em
 export class BuscarViajesComponent implements OnInit {
   //viajes: Viajes[];
   viajes: any[]=[];
+  usuarios: any[]=[];//Para mostrar el nombre del conductor al momento de buscar un viaje
   usuario: usuariosI;
   conductor: usuariosI;
  

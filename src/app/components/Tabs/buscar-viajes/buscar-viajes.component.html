@@ -74,12 +74,7 @@
     <h1 class="Tittle_vehicle">Viajes disponibles</h1>
 
     <!-- Efecto de carga -->
-    <ion-item *ngIf="viajes.length == 0" class="ion-padding custom-skeleton">
-      <ion-label>
-        <ion-skeleton-text animated></ion-skeleton-text>
-        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
-      </ion-label>
-    </ion-item>  
+      <img *ngIf="viajes.length == 0" class="loading" src="assets/icon/loading.gif" alt="Buscando viajes...">
 
     <!-- <ion-item>
       <ion-button color="secondary" id="trip_button" (click)="openEmail()">Enviar correo</ion-button>
