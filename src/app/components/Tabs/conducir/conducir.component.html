@@ -42,12 +42,12 @@
       <!-- <p> -->
         <mat-form-field class="mat_field first_margin" appearance="fill">
           <mat-label>Cantidad maxima de pasajeros (1-6)</mat-label>
-          <input matInput type="number" min="1" max="6" placeholder="4" name="pasajero" [(ngModel)]="form.pasajero">
+          <input class="pasajerostest" matInput type="number" min="1" max="6" placeholder="4" name="pasajero" [(ngModel)]="form.pasajero">
         </mat-form-field>
 
         <mat-form-field class="mat_field" appearance="fill" floatLabel="always">
           <mat-label>Tarifa por persona</mat-label>
-          <input matInput type="number" class="example-right-align" placeholder="0" min="1" max="3500" name="tarifa" [(ngModel)]="form.tarifa">
+          <input matInput type="number" class="example-right-align tarifatest" placeholder="0" min="1" max="3500" name="tarifa" [(ngModel)]="form.tarifa">
           <span matPrefix>$&nbsp;</span>
         </mat-form-field>
 
@@ -86,7 +86,7 @@
         
         <mat-form-field class="mat_field" appearance="fill">
           <mat-label>Patente del vehiculo</mat-label>
-          <input matInput placeholder="XX-XX-10" name="patente" [(ngModel)]="form.patente">
+          <input class="patentetest" matInput placeholder="XX-XX-10" name="patente" [(ngModel)]="form.patente">
         </mat-form-field>
 
         <mat-form-field class="mat_field " appearance="fill">
